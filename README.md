@@ -1,5 +1,7 @@
 # fev
 
+A simple and universal architecture for frontend projects.
+
 ## file tree
 
     .

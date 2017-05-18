@@ -4,7 +4,7 @@
 
 module.exports = function (options) {
     options = options || {};
-    var debug = options.debug !== undefined ? options.debug : true;
+    var debug = (options.debug !== undefined) ? options.debug : true;
 
     if (debug) {
         //

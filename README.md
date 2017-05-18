@@ -14,3 +14,29 @@ A simple and universal architecture for frontend projects.
     ├── dest/                     # built files
     ├── mock/                     # mock data
     └── script/                   # development scripts
+
+## scripts
+
+### preview
+
+Preview a page, module, component, or all.
+
+`$ npm run preview -- ./module-module1`
+
+`$ npm run preview`
+
+### build
+
+Build a page, module, component, or all.
+
+`$ npm run build -- ./module-module1`
+
+`$ npm run build`
+
+`$ npm run build-online`
+
+### serve
+
+Run a web server for development to serve pages, resources and mock data.
+
+`$ npm run server`

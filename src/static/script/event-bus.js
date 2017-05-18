@@ -70,6 +70,10 @@ Object.prototype[on] = function (eventIds, callback, once) {
         if (!table[eventId]) table[eventId] = [];
         let cbs = findCallback(eventId, listenerId);
         if (cbs === null) {
+            while (table[eventId].length > 0
+                && table[eventId][table[eventId].length - 1].callback.length === 0) {
+                table[eventId].pop();
+            }
             table[eventId].push({
                 listener: listenerId,
                 callback: [{
@@ -83,6 +87,11 @@ Object.prototype[on] = function (eventIds, callback, once) {
                     cb.once = !!once;
                     return;
                 }
+            }
+
+            while (cbs.length > 0
+            && cbs[cbs.length - 1].callback === undefined) {
+                cbs.pop();
             }
             cbs.push({
                 callback,

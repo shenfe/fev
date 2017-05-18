@@ -2,6 +2,7 @@
   "name": "fev",
   "version": "0.0.1",
   "scripts": {
+    "preview": "node ./script/preview.js $1",
     "server": "webpack-dev-server --inline",
     "build": "gulp pack --gulpfile ./script/gulpfile.js --env debug",
     "build-online": "gulp pack --gulpfile ./script/gulpfile.js --env production"

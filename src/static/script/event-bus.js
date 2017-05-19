@@ -24,7 +24,12 @@ let findCallback = (eventId, listenerId) => {
     return null;
 };
 
+/**
+ * Whether to use symbol instead of string
+ * @type {boolean}
+ */
 const useSymbolInsteadOfString = true;
+
 let id, generateId, on, once, off, trigger;
 if (useSymbolInsteadOfString) {
     id = Symbol('id');

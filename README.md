@@ -20,29 +20,29 @@ A simple and universal architecture for frontend projects.
 
     └── src
         │
-        ├── controller                  # controllers
+        ├── controller                    # controllers
         │   │
-        │   ├── api.js                     #   API controller file (if necessary), APIs (and hooks)
-        │   ├── event.js                   # event controller file (if necessary), events (and hooks)
-        │   ├── route.js                   # route controller file (if necessary), routes (and hooks)
-        │   ├── store.js                   # store controller file (if necessary), stored status (and hooks)
+        │   ├── api.js                        #   API controller file (if necessary), APIs (and hooks)
+        │   ├── event.js                      # event controller file (if necessary), events (and hooks)
+        │   ├── route.js                      # route controller file (if necessary), routes (and hooks)
+        │   ├── store.js                      # store controller file (if necessary), stored status (and hooks)
         │   └── ...
         │
-        ├── view                        # views
+        ├── view                          # views
         │   │
-        │   ├── page-page1/                # view fragment folder, page1
-        │   ├── module-module1/            # view fragment folder, module1
-        │   ├── component-component1/      # view fragment folder, component1
+        │   ├── page-page1/                   # view fragment folder, page1
+        │   ├── module-module1/               # view fragment folder, module1
+        │   ├── component-component1/         # view fragment folder, component1
         │   └── ...
         │
-        └── static                      # common static files
+        └── static                        # common static files
             │
-            ├── script                     # common scripts
+            ├── script                        # common scripts
             │   ├── helper.js
             │   ├── util.js
             │   └── ...
             │
-            └── style                      # common styles
+            └── style                         # common styles
                 ├── reset.css
                 ├── global.css
                 └── ...

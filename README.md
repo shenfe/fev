@@ -16,7 +16,7 @@ A simple and universal architecture for frontend projects.
 
 ## `src/` => `dest/`
 
-`controller`、`view`、`static` 路径下的代码最终会被合入同一个目录，如：
+`controller`、`view`、`static` 路径下的代码最终会被合入 `static`，如：
 
     └── src
         │
@@ -51,23 +51,30 @@ A simple and universal architecture for frontend projects.
 
     └── dest
         │
-        ├── api.js
-        ├── event.js
-        ├── route.js
-        ├── store.js
-        ├── ...
+        ├── page
+        │   │
+        │   ├── page1.html
+        │   └── ...
         │
-        ├── page-page1/
-        ├── module-module1/
-        ├── component-component1/
-        ├── ...
-        │
-        ├── script/
-        └── style/
+        └── static
+            │
+            ├── api.js
+            ├── event.js
+            ├── route.js
+            ├── store.js
+            ├── ...
+            │
+            ├── page-page1/
+            ├── module-module1/
+            ├── component-component1/
+            ├── ...
+            │
+            ├── script/
+            └── style/
 
-因此：
+并经过编译打包，因此：
 
-    dest === (src => src.controller ∪ src.view ∪ src.static)(src)
+    dest.static = pack(src.controller ∪ src.view ∪ src.static)
 
 ### 项目源码的调用关系
 

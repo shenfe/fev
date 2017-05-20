@@ -2,15 +2,26 @@
   "name": "fev",
   "version": "0.0.1",
   "scripts": {
+    "babel:static": "babel ./src/static -d ./dest",
     "preview": "node ./script/preview.js",
     "server": "webpack-dev-server --inline",
     "build": "gulp pack --gulpfile ./script/gulpfile.js --env debug",
-    "build-online": "gulp pack --gulpfile ./script/gulpfile.js --env production"
+    "build:online": "gulp pack --gulpfile ./script/gulpfile.js --env production"
   },
   "devDependencies": {
-
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4"
   },
   "babel": {
-
+    "presets": [
+      "es2015",
+      "react",
+      "stage-2"
+    ],
+    "plugins": [
+      "transform-decorators-legacy"
+    ]
   }
 }

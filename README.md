@@ -13,7 +13,8 @@ A simple and universal architecture for frontend projects.
     ├── mock/                     # mock data
     └── script/                   # development scripts
 
-## `src/` & `dest/`
+
+## `src/` => `dest/`
 
 `controller`、`view`、`static` 路径下的代码最终会被合入同一个目录，如：
 
@@ -45,7 +46,7 @@ A simple and universal architecture for frontend projects.
 
     └── dest
         │
-        ├── api.js                      # api   controller file (if necessary)
+        ├── api.js                      #   api controller file (if necessary)
         ├── route.js                    # route controller file (if necessary)
         ├── store.js                    # store controller file (if necessary)
         ├── ...
@@ -60,7 +61,7 @@ A simple and universal architecture for frontend projects.
 
 因此：
 
-    `dest === (src => src.controller ∪ src.view ∪ src.static)(src)`
+    dest === (src => src.controller ∪ src.view ∪ src.static)(src)
 
 ### 项目源码的调用关系
 
@@ -70,11 +71,8 @@ A simple and universal architecture for frontend projects.
       │              v
       └─────────>  static
 
-## `mock/`
 
-All mock data.
-
-## `package.json` & `script/`
+## `package.json` => `script/`
 
 All dev script entrances are defined in `package.json` file, and starting with `npm run`. `npm` commands will invoke 
 scripts in the `script` directory, where there are webpack config files, self-defined webpack loaders and plugins, 
@@ -104,3 +102,7 @@ Preview a page, module, component, or all.
 
 `$ npm run preview`
 
+
+## `mock/`
+
+All mock data.

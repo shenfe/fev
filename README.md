@@ -21,23 +21,28 @@ A simple and universal architecture for frontend projects.
     └── src
         │
         ├── controller                  # controllers
-        │   ├── api.js
-        │   ├── route.js
-        │   ├── store.js
+        │   │
+        │   ├── api.js                     #   API controller file (if necessary), APIs (and hooks)
+        │   ├── event.js                   # event controller file (if necessary), events (and hooks)
+        │   ├── route.js                   # route controller file (if necessary), routes (and hooks)
+        │   ├── store.js                   # store controller file (if necessary), stored status (and hooks)
         │   └── ...
         │
         ├── view                        # views
-        │   ├── page-page1/
-        │   ├── module-module1/
-        │   ├── component-component1/
+        │   │
+        │   ├── page-page1/                # view fragment folder, page1
+        │   ├── module-module1/            # view fragment folder, module1
+        │   ├── component-component1/      # view fragment folder, component1
         │   └── ...
         │
         └── static                      # common static files
-            ├── script
+            │
+            ├── script                     # common scripts
             │   ├── helper.js
             │   ├── util.js
             │   └── ...
-            └── style
+            │
+            └── style                      # common styles
                 ├── reset.css
                 ├── global.css
                 └── ...
@@ -46,18 +51,19 @@ A simple and universal architecture for frontend projects.
 
     └── dest
         │
-        ├── api.js                      #   api controller file (if necessary)
-        ├── route.js                    # route controller file (if necessary)
-        ├── store.js                    # store controller file (if necessary)
+        ├── api.js
+        ├── event.js
+        ├── route.js
+        ├── store.js
         ├── ...
         │
-        ├── page-page1/                 # view fragment folder, page1
-        ├── module-module1/             # view fragment folder, module1
-        ├── component-component1/       # view fragment folder, component1
+        ├── page-page1/
+        ├── module-module1/
+        ├── component-component1/
         ├── ...
         │
-        ├── script/                     # common scripts
-        └── style/                      # common styles
+        ├── script/
+        └── style/
 
 因此：
 
@@ -74,8 +80,8 @@ A simple and universal architecture for frontend projects.
 
 ## `package.json` => `script/`
 
-All dev script entrances are defined in `package.json` file, and starting with `npm run`. `npm` commands will invoke 
-scripts in the `script` directory, where there are webpack config files, self-defined webpack loaders and plugins, 
+All dev script entrances are defined in `package.json` file, and starting with `npm run`. `npm` commands will invoke
+scripts in the `script` directory, where there are webpack config files, self-defined webpack loaders and plugins,
 gulp config files, server-running scripts, or other self-defined processing scripts.
 
 ### build

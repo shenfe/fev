@@ -2,7 +2,7 @@
  * Created by godzilla on 5/18/17.
  */
 
-const util = require('../static/script/util.js');
+const util = require('script/util.js');
 
 var router = {
     redirect: () => {}

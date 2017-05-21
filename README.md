@@ -51,11 +51,6 @@ A simple and universal architecture for frontend projects.
 
     └── dest
         │
-        ├── page
-        │   │
-        │   ├── page1.html
-        │   └── ...
-        │
         └── static
             │
             ├── api.js
@@ -72,7 +67,30 @@ A simple and universal architecture for frontend projects.
             ├── script/
             └── style/
 
-并经过编译打包，因此：
+并经过编译打包，如：
+
+    └── dest
+        │
+        ├── page
+        │   │
+        │   ├── page1.html
+        │   ├── page2.html
+        │   └── ...
+        │
+        └── static
+            │
+            ├── app.js
+            │
+            ├── page1.js
+            ├── page1.css
+            ├── page2.js
+            ├── page2.css
+            ├── ...
+            │
+            ├── common.js
+            └── common.css
+
+因此：
 
     dest.static = pack(src.controller ∪ src.view ∪ src.static)
 

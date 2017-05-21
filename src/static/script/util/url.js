@@ -53,7 +53,7 @@ const __href__ = Symbol('href');
 
 /* main class */
 
-class Route {
+class Url {
     constructor() {
         if (arguments.length === 0) {
             this.href = window.location.href;
@@ -114,4 +114,4 @@ class Route {
     }
 }
 
-export default Route
+export default Url

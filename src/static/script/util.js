@@ -4,6 +4,6 @@
 
 require('babel-polyfill');
 
-export { request } from 'util/request'
-export { route } from 'util/route'
-export { cookie } from 'util/cookie'
+export request from 'util/request'
+export url from 'util/url'
+export cookie from 'util/cookie'

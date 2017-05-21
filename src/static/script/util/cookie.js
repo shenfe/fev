@@ -2,6 +2,18 @@
  * Modified by keshen on 2017/5/20.
  */
 
+/**
+ * Usage:
+
+    Cookie.get();
+    Cookie.get('name');
+    Cookie.set('name', 'value');
+    Cookie.set('name', 'value', { expires: 7, path: '' });
+    Cookie.remove('name');
+    Cookie.remove('name', { path: '' });
+
+ */
+
 /*!
  * JavaScript Cookie v2.1.4
  * https://github.com/js-cookie/js-cookie
@@ -13,7 +25,9 @@
 function extend () {
     let args = [].slice.call(arguments, 0);
     return args.reduce((prev, next) => {
-        for (var key in next) {
+        if (!next || Object.prototype.toString.call(next) !== '[object Object]') return prev;
+        for (let key in next) {
+            if (!next.hasOwnProperty(key)) continue;
             prev[key] = next[key];
         }
         return prev;
@@ -22,7 +36,7 @@ function extend () {
 
 function init () {
     function api (key, value, attributes) {
-        var result;
+        let result;
         if (typeof document === 'undefined') {
             return;
         }
@@ -52,9 +66,9 @@ function init () {
             key = key.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent);
             key = key.replace(/[\(\)]/g, escape);
 
-            var stringifiedAttributes = '';
+            let stringifiedAttributes = '';
 
-            for (var attributeName in attributes) {
+            for (let attributeName in attributes) {
                 if (!attributes[attributeName]) {
                     continue;
                 }
@@ -78,19 +92,19 @@ function init () {
         // To prevent the for loop in the first place assign an empty array
         // in case there are no cookies at all. Also prevents odd result when
         // calling "get()"
-        var cookies = document.cookie ? document.cookie.split('; ') : [];
-        var rdecode = /(%[0-9A-Z]{2})+/g;
+        let cookies = document.cookie ? document.cookie.split('; ') : [];
+        let rdecode = /(%[0-9A-Z]{2})+/g;
 
         for (let eachCookie of cookies) {
-            var parts = eachCookie.split('=');
-            var cookie = parts.slice(1).join('=');
+            let parts = eachCookie.split('=');
+            let cookie = parts.slice(1).join('=');
 
             if (cookie.charAt(0) === '"') {
                 cookie = cookie.slice(1, -1);
             }
 
             try {
-                var name = parts[0].replace(rdecode, decodeURIComponent);
+                let name = parts[0].replace(rdecode, decodeURIComponent);
                 cookie = cookie.replace(rdecode, decodeURIComponent);
 
                 if (key === name) {
@@ -122,6 +136,4 @@ function init () {
     return api;
 }
 
-var cookie = init();
-
-export default cookie
+export default init()

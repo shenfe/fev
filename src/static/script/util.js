@@ -2,6 +2,7 @@
  * Created by godzilla on 5/18/17.
  */
 
+require('xdomain');
 require('babel-polyfill');
 
 export request from 'util/request'

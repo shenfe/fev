@@ -38,11 +38,13 @@ A simple and universal architecture for frontend projects.
         └── static                        # common static files
             │
             ├── script                        # common scripts
+            │   │
             │   ├── helper.js
             │   ├── util.js
             │   └── ...
             │
             └── style                         # common styles
+                │
                 ├── reset.css
                 ├── global.css
                 └── ...

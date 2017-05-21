@@ -2,7 +2,7 @@
  * Created by keshen on 2017/5/20.
  */
 
-import { redirector } from './decorator'
+/* helper functions */
 
 const ObjectToQueryString = obj => {
     var queries = [];
@@ -27,56 +27,91 @@ const QueryStringToObject = str => {
         }, {});
 };
 
-const href = Symbol('href');
+const TypeOf = function (v) {
+    let t = Object.prototype.toString.call(v);
+    return t.substring(8, t.length - 1).toLowerCase();
+};
+
+const MethodRedirector = function (args, pattern, target) {
+    args = [].slice.call(args);
+    let methodName = pattern[args.map(TypeOf).join(',')] || '';
+    if (methodName.startsWith('static ')) {
+        methodName = methodName.split(' ').pop();
+        return target.constructor[methodName].apply(target.constructor, args);
+    } else if (methodName === 'this') {
+        return new target(...args);
+    } else {
+        return target[methodName].apply(target, args);
+    }
+};
+
+
+/* symbols */
+
+const __href__ = Symbol('href');
+
+
+/* main class */
 
 class Route {
     constructor() {
+        if (arguments.length === 0) {
+            this.href = window.location.href;
+            return;
+        }
         this.constructor$.apply(this, [].slice.call(arguments));
     }
 
-    @redirector({
-        '': 'static current',
-        'string': 'constructor$1',
-        'object': 'constructor$2'
-    })
-    constructor$() {}
+    constructor$() {
+        let pattern = {
+            'string': 'constructor$1',
+            'object': 'constructor$2'
+        };
+        return MethodRedirector(arguments, pattern, this);
+    }
 
     constructor$1(href) {
-        if (typeof document === 'object' && document.createElement) {
-            let a = document.createElement(href);
-            a.href = href;
-            this[href] = a.href;
-            this.hash = a.hash;
-            this.queryString = a.search;
-        }
+        this.href = href;
     }
 
     constructor$2(obj) {}
 
     get href() {
-        return this[href];
+        return this[__href__];
+    }
+    set href(v) {
+        let a = document.createElement('a');
+        a.href = v;
+        this[__href__] = a.href;
+        this.origin = a.origin;
+        this.protocol = a.protocol;
+        this.host = a.host;
+        this.hostName = a.hostname;
+        this.port = a.port;
+        this.path = a.pathname;
+        this.queryString = a.search;
+        this.hash = a.hash;
     }
 
-    get hash() {}
-    set hash(v) {}
-
-    get queryString() {}
+    get queryString() {
+        return ObjectToQueryString(this.query);
+    }
     set queryString(v) {
         this.query = QueryStringToObject(v);
     }
-
-    get path() {}
 
     static current() {
         return new this(window.location.href);
     }
 
-    @redirector({
-        '': 'current',
-        'string': 'this',
-        'object': 'this'
-    })
-    static create() {}
+    static create() {
+        let pattern = {
+            '': 'current',
+            'string': 'this',
+            'object': 'this'
+        };
+        return MethodRedirector(arguments, pattern, this);
+    }
 }
 
 export default Route

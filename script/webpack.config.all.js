@@ -10,7 +10,7 @@ module.exports = function (options) {
         entry: __dirname + '/src/main.js',
         output: {
             path: __dirname + '/dest',
-            filename: 'bundle.js',
+            filename: '[name]-[hash].js',
             module: {
                 loaders: [
                     {
@@ -24,15 +24,15 @@ module.exports = function (options) {
                     },
                     {
                         test: /\.css$/,
-                        loader: 'style!css?modules!postcss'
+                        loader: 'style!css?modules&localIdentName=[path][name]---[local]---[hash:base64:5]!postcss'
                     }
-                ],
-                plugins: []
+                ]
             }
         },
         postcss: [
             require('autoprefixer')
-        ]
+        ],
+        plugins: []
     };
 
     if (debug) {

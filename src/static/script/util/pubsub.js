@@ -60,6 +60,8 @@ if (useSymbolInsteadOfString) {
  * @param once
  */
 Object.prototype[on] = function (eventIds, callback, once) {
+    if (typeof callback === 'function') callback = callback.bind(this);
+
     let eventIdList;
     if (typeof eventIds === 'string' && eventIds.trim() !== '') {
         eventIdList = eventIds.split(',').map(e => e.trim());

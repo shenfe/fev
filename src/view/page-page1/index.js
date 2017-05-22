@@ -1,12 +1,22 @@
-import util from '../../static/script/util';
-var helper = require('../../static/script/util');
+import util from '/static/script/util'
+import helper from '/static/script/helper'
 
-import module1 from '../module-module1';
+import module1 from '/view/module-module1'
+import module2 from './module-module2'
 
-var other = require('./other');
+import headerStyle from './header.scss'
+import footerTemplate from './footer.html'
 
-import b from './other2';
+import other from './other'
 
-export default page1
+const method2 = Symbol('method2');
 
-module.exports = page1;
+export default class Page1 {
+    constructor(data) {}
+
+    method1() {}
+
+    [method2]() {}
+
+    static method3() {}
+}

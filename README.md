@@ -139,3 +139,31 @@ Preview a page, module, component, or all.
 ## `mock/`
 
 All mock data.
+
+
+## 组件的编写
+
+把`view/`中的 page、module、component 统称为组件。组件对任何外部或内部的依赖，都在 js 中使用 require 或 import 引入。
+
+### 引入 js 类库
+
+    var helper = require('/static/script/helper');
+    import other from './other'
+
+### 引入 css 样式
+
+    require('./index.css'); // 如果在 index.js 中则无需 index.css
+    import headerStyle from './header.scss'
+
+### 引入其他组件
+
+    var module1 = require('/view/module-module1');
+    import module2 from './module-module2'
+
+### 引入 html 模板
+
+    import footerTemplate from './footer.html'
+
+### 组件导出
+
+    export default class

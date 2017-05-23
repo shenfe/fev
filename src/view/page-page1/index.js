@@ -1,11 +1,11 @@
 import util from '/static/script/util'
 import helper from '/static/script/helper'
 
-import module1 from '/view/module-module1'
-import module2 from './module-module2'
+var module1 = require('/view/module-module1');
+var module2 = require('./module-module2');
 
 import headerStyle from './header.scss'
-import footerTemplate from './footer.html'
+var footerTemplate = require('./footer.html');
 
 import other from './other'
 

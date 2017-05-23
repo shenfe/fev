@@ -2,6 +2,8 @@
  * Created by godzilla on 5/18/17.
  */
 
+var path = require('path');
+
 module.exports = function (options) {
     options = options || {};
     var debug = (options.debug !== undefined) ? options.debug : true;
@@ -10,29 +12,29 @@ module.exports = function (options) {
         entry: __dirname + '/src/main.js',
         output: {
             path: __dirname + '/dest',
-            filename: '[name]-[hash].js',
-            module: {
-                loaders: [
-                    {
-                        test: /\.json$/,
-                        loader: 'json'
-                    },
-                    {
-                        test: /\.js$/,
-                        exclude: /node_modules/,
-                        loader: 'babel'
-                    },
-                    {
-                        test: /\.css$/,
-                        loader: 'style!css?modules&localIdentName=[path][name]---[local]---[hash:base64:5]!postcss'
-                    }
-                ]
-            }
+            filename: '[name]-[hash].js'
         },
+        module: {
+            rules: [
+                {
+                    test: /\.(js|jsx)$/,
+                    exclude: /node_modules/,
+                    use: ['babel-loader']
+                },
+                {
+                    test: /\.css$/,
+                    use: [
+                        'style-loader',
+                        'css-loader?modules&localIdentName=[path][name]---[local]---[hash:base64:5]',
+                        'postcss-loader'
+                    ]
+                }
+            ]
+        },
+        plugins: [],
         postcss: [
             require('autoprefixer')
-        ],
-        plugins: []
+        ]
     };
 
     if (debug) {

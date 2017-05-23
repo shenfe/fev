@@ -145,6 +145,8 @@ All mock data.
 
 把`view/`中的 page、module、component 统称为组件。组件对任何外部或内部的依赖，都在 js 中使用 require 或 import 引入。
 
+一般地，组件最终导出为一个 function，function 可以是类，也可以不是类；组件还可以导出一个 object，像 `*.vue` 单文件那样，导出的 object 用于 Vue 的构造函数创建 Vue 组件实例 。
+
 ### 引入 js 类库
 
     var helper = require('/static/script/helper');
@@ -153,17 +155,70 @@ All mock data.
 ### 引入 css 样式
 
     require('./index.css'); // 如果在 index.js 中则无需 index.css
-    import headerStyle from './header.scss'
 
 ### 引入其他组件
 
     var module1 = require('/view/module-module1');
-    import module2 from './module-module2'
+    var module2 = require('./module-module2');
 
 ### 引入 html 模板
 
-    import footerTemplate from './footer.html'
+    var headerTemplate = require('./header.tpl');
+    var footerTemplate = require('./footer.vm');
 
-### 组件导出
+### 编写组件类
 
-    export default class
+    class MyComponent {
+        constructor(props) {/**/}
+        render() {/**/}
+    }
+    export default MyComponent
+
+或者
+
+    var MyComponent = function (props) {/**/};
+    MyComponent.prototype.render = function () {/**/};
+    module.exports = MyComponent;
+
+### 编写函数式组件
+
+    const MyComponent = (props) => {}
+    export default MyComponent
+
+或者
+
+    var MyComponent = function (props) {/**/};
+    MyComponent.prototype.render = function () {/**/};
+    module.exports = MyComponent;
+
+### 编写对象构造组件
+
+`*.vue` 单文件是典型的将 Vue 组件抽象成一个 object，包含了 Vue 组件构造函数所需的组件信息。
+
+例如在一个 `*.vue` 文件中：
+
+    export default {
+        name: 'MyComponent',
+        data() {
+            return {/**/}
+        },
+        methods: {/**/}
+    };
+    
+`*.vue` 文件导出的组件默认为 Vue 组件类型。而一般地，组件要导出为一个 object，请指明组件的类型，即它最终会被传入哪种构造函数进而构造出实例。
+
+    var MyComponent = {
+        type: 'velocity',
+        
+        // 如果数据需要通过js进行转换
+        data: function (data) {
+            return data;
+        },
+        
+        // 如果数据需要使用另一个模板转换
+        data: require('./data.vm'),
+        
+        template: require('./index.vm'),
+    };
+    module.exports = MyComponent;
+

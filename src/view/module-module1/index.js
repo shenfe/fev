@@ -12,5 +12,6 @@ class Module1 {
 }
 
 Module1.type = 'te';
+Module1.name = 'module-module1';
 
 export default Module1

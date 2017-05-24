@@ -111,15 +111,13 @@ All dev script entrances are defined in `package.json` file, and starting with `
 scripts in the `script` directory, where there are webpack config files, self-defined webpack loaders and plugins,
 gulp config files, server-running scripts, or other self-defined processing scripts.
 
-### build
+### development or production
 
-Build a view fragment, or all.
+Build for development environment or production environment.
 
-`$ npm run build -- ./module-module1`
+`$ npm run dev`
 
-`$ npm run build`
-
-`$ npm run build:online`
+`$ npm run pro`
 
 ### server
 
@@ -131,9 +129,15 @@ Run a web server for development to serve pages, resources and mock data.
 
 Preview a page, module, component, or all.
 
-`$ npm run preview -- ./module-module1`
+`$ npm run preview -- ./module-module1 ./page-page1`
 
 `$ npm run preview`
+
+### proxy
+
+Run an extra server for proxy requests or resources.
+
+`$ npm run proxy`
 
 
 ## `mock/`
@@ -182,13 +186,12 @@ All mock data.
 
 ### 编写函数式组件
 
-    const MyComponent = (props) => {}
+    const MyComponent = (props) => {/**/}
     export default MyComponent
 
 或者
 
     var MyComponent = function (props) {/**/};
-    MyComponent.prototype.render = function () {/**/};
     module.exports = MyComponent;
 
 ### 编写对象构造组件
@@ -219,6 +222,17 @@ All mock data.
         data: require('./data.vm'),
         
         template: require('./index.vm'),
+        
+        // will be DOMs as soon as the DOM is ready
+        elements: {
+            el1: '#el1',
+            el2: '[node-type~="el2"]'
+        },
+        
+        methods: {},
+        
+        // get data from DOMs, bind events, and so on
+        ready: function () {}
     };
     module.exports = MyComponent;
 

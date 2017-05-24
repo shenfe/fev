@@ -6,6 +6,10 @@ const path = require('path');
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+// Create multiple instances
+const extractCommonCss = new ExtractTextPlugin('static/common.css');
+const extractPageCss = new ExtractTextPlugin('[name].css');
+
 const { cwd, isProduction, getDirs } = require('./helper');
 
 /**
@@ -76,13 +80,11 @@ module.exports = {
             },
             {
                 test: /\.vm$/,
-                use: ['webpack-vm-loader']
+                use: ['vm-loader']
             },
             {
                 test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    use: 'css-loader'
-                })
+                use: extractCommonCss.extract([ 'css-loader', 'postcss-loader' ])
             }
         ]
     },

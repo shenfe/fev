@@ -4,8 +4,8 @@
   "scripts": {
     "preview": "node ./script/preview.js",
     "server": "webpack-dev-server --inline --hot",
-    "build": "cross-env NODE_ENV=development PLATFORM=web webpack --config build/webpack.config.js --watch --progress --colors",
-    "pro": "cross-env NODE_ENV=production PLATFORM=web webpack --config build/webpack.config.js --progress --colors"
+    "build": "cross-env NODE_ENV=development PLATFORM=web webpack --config script/webpack.config.js --watch --progress --colors",
+    "pro": "cross-env NODE_ENV=production PLATFORM=web webpack --config script/webpack.config.js --progress --colors"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.1",
@@ -19,7 +19,6 @@
     "cross-env": "^5.0.0",
     "css-loader": "^0.28.1",
     "extract-text-webpack-plugin": "^2.1.0",
-    "json-loader": "^0.5.4",
     "postcss-loader": "^2.0.5",
     "style-loader": "^0.17.0",
     "webpack": "^2.5.1"

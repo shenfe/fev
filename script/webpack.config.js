@@ -2,35 +2,69 @@
  * Created by godzilla on 5/18/17.
  */
 
-var path = require('path');
+const path = require('path');
 
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-var isProduction = function () {
-    return process.env.NODE_ENV === 'production';
+const { cwd, isProduction, getDirs } = require('./helper');
+
+/**
+ * configuration: specifying pages
+ */
+const specifiedPages = {}; // or an array
+
+const getPagesEntry = () => {
+    let folders = getDirs(path.resolve(cwd, 'src/view'));
+    if (typeof specifiedPages === 'undefined'
+        || !specifiedPages || specifiedPages.length === 0
+        || Object.keys(specifiedPages).length === 0) {
+        return folders.filter(name => name.startsWith('page-'))
+            .reduce((prev, next) => {
+                prev[next.substr(5)] = `view/${next}/index.js`;
+                return prev;
+            }, {});
+    } else {
+        if (Object.prototype.toString.call(specifiedPages) === '[object Array]') {
+            return folders.filter(name => {
+                return specifiedPages.indexOf(name) >= 0
+                    || (name.startsWith('page-') && specifiedPages.indexOf(name.subtr(5)) >= 0);
+            })
+                .reduce((prev, next) => {
+                    prev[next.startsWith('page-') ? next.substr(5) : next] = `view/${next}/index.js`;
+                    return prev;
+                }, {});
+        } else {
+            let re = {};
+            for (let p in specifiedPages) {
+                if (folders.indexOf(specifiedPages[p]) >= 0) {
+                    re[p] = `view/${specifiedPages[p]}/index.js`;
+                }
+            }
+            return re;
+        }
+    }
 };
 
 module.exports = {
     devtool: isProduction() ? 'cheap-module-source-map' : 'eval-source-map',
-    context: path.resolve(__dirname, 'src'),
-    entry: {
-        page1: './view/page-page1/index.js',
-        vendor: ['./static/script']
-    },
+    context: path.resolve(cwd, 'src'),
+    entry: Object.assign(getPagesEntry(), {
+        vendor: ['static/script']
+    }),
     output: {
-        path: path.resolve(__dirname, 'dest'),
+        path: path.resolve(cwd, 'dest'),
         filename: '[name]-[hash].bundle.js'
     },
     resolve: {
         modules: [
-            path.resolve(__dirname, 'script'),
+            path.resolve(cwd, 'script'),
             'node_modules'
         ],
         alias: {
-            SCRIPTS: path.resolve(__dirname, 'src/static/script/'),
-            STYLES: path.resolve(__dirname, 'src/static/style/'),
-            CONTROLLERS: path.resolve(__dirname, 'src/controller/'),
-            VIEWS: path.resolve(__dirname, 'src/view/')
+            SCRIPTS: path.resolve(cwd, 'src/static/script/'),
+            STYLES: path.resolve(cwd, 'src/static/style/'),
+            CONTROLLERS: path.resolve(cwd, 'src/controller/'),
+            VIEWS: path.resolve(cwd, 'src/view/')
         }
     },
     module: {

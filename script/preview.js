@@ -14,7 +14,7 @@ const viewDir = 'src/view';
 
 const { cwd, getDirs } = require('./helper.js');
 
-const builder = require('./build');
+const builder = require('./builder');
 
 let viewList = getDirs(path.resolve(cwd, viewDir));
 
@@ -23,6 +23,6 @@ if (!(args.length === 0 || (args.length === 1 && args[0] === 'all'))) {
 }
 
 // build the views
-viewList.forEach(v => builder(v));
+viewList.forEach(builder);
 
 //TODO: prepare the preview page

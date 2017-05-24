@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "scripts": {
     "preview": "node ./script/preview.js",
+    "proxy": "node ./script/proxie.js",
     "server": "webpack-dev-server --inline --hot",
-    "build": "cross-env NODE_ENV=development PLATFORM=web webpack --config script/webpack.config.js --watch --progress --colors",
+    "dev": "cross-env NODE_ENV=development PLATFORM=web webpack --config script/webpack.config.js --watch --progress --colors",
     "pro": "cross-env NODE_ENV=production PLATFORM=web webpack --config script/webpack.config.js --progress --colors"
   },
   "devDependencies": {

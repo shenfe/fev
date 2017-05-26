@@ -22,7 +22,7 @@
     "extract-text-webpack-plugin": "^2.1.0",
     "postcss-loader": "^2.0.5",
     "style-loader": "^0.17.0",
-    "webpack": "^2.5.1"
+    "webpack": "^2.6.1"
   },
   "dependencies": {
     "babel-polyfill": "^6.23.0",

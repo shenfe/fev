@@ -2,6 +2,10 @@
  * Created by godzilla on 5/18/17.
  */
 
+'use strict';
+
+const webpack = require('webpack');
+
 const path = require('path');
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -10,7 +14,10 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const extractCommonCss = new ExtractTextPlugin('static/common.css');
 const extractPageCss = new ExtractTextPlugin('[name].css');
 
-const { cwd, isProduction, getDirs } = require('./helper');
+const helper = require('./helper');
+const cwd = helper.cwd,
+    isProduction = helper.isProduction,
+    getDirs = helper.getDirs;
 
 /**
  * configuration: specifying pages
@@ -53,7 +60,7 @@ module.exports = {
     devtool: isProduction() ? 'cheap-module-source-map' : 'eval-source-map',
     context: path.resolve(cwd, 'src'),
     entry: Object.assign(getPagesEntry(), {
-        vendor: ['static/script']
+        vendor: ['static/script/']
     }),
     output: {
         path: path.resolve(cwd, 'dest'),

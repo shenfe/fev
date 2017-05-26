@@ -2,6 +2,8 @@
  * Created by keshen on 2017/5/22.
  */
 
+import api from 'CONTROLLERS/api'
+
 class Module1 {
     constructor(props) {
 

@@ -1,7 +1,7 @@
-import util from '/static/script/util'
-import helper from '/static/script/helper'
+import util from 'SCRIPTS/util'
+import helper from 'SCRIPTS/helper'
 
-var module1 = require('/view/module-module1');
+var module1 = require('VIEWS/module-module1');
 var module2 = require('./module-module2');
 
 import headerStyle from './header.scss'

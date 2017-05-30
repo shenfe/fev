@@ -2,8 +2,16 @@
  * Created by godzilla on 5/18/17.
  */
 
-export pubsub from 'util/pubsub'
-export request from 'util/request'
-export url from 'util/url'
-export cookie from 'util/cookie'
-export storage from 'util/storage'
+import * as pubsub from './util/pubsub';
+import * as request from './util/request';
+import * as url from './util/url';
+import * as cookie from './util/cookie';
+import * as storage from './util/storage';
+
+export default {
+    pubsub,
+    request,
+    url,
+    cookie,
+    storage
+};

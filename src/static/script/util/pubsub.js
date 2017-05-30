@@ -195,6 +195,4 @@ Object.prototype[trigger] = function (eventIds, data) {
     }
 };
 
-if (typeof module !== 'undefined') {
-    module.exports = { on, once, off, trigger };
-}
+export default { on, once, off, trigger }

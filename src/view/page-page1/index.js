@@ -1,8 +1,8 @@
-import util from 'SCRIPTS/util'
+import * as util from 'SCRIPTS/util'
 import helper from 'SCRIPTS/helper'
 
 var module1 = require('VIEWS/module-module1');
-var module2 = require('./module-module2');
+var module2 = require('./module-module2/index.vue');
 
 import headerStyle from './header.scss'
 var footerTemplate = require('./footer.html');

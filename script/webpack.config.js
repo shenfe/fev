@@ -8,11 +8,15 @@ const webpack = require('webpack');
 
 const path = require('path');
 
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-// Create multiple instances
-const extractCommonCss = new ExtractTextPlugin('static/common.css');
-const extractPageCss = new ExtractTextPlugin('[name].css');
+const ManifestPlugin = require('webpack-manifest-plugin');
+
+const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
+
+const WebpackMd5Hash = require('webpack-md5-hash');
 
 const helper = require('./helper');
 const cwd = helper.cwd,
@@ -66,7 +70,9 @@ module.exports = {
     entry: Object.assign(getPagesEntry(), {}),
     output: {
         path: path.resolve(cwd, 'dest'),
-        filename: '[name]-[hash].bundle.js'
+        publicPath: '/dest/', // webpack-dev-server访问的路径
+        filename: isProduction() ? '[name].[chunkhash].js' : '[name].js',
+        chunkFilename: isProduction() ? '[name].[chunkhash].js' : '[name].js',
     },
     resolve: {
         modules: [
@@ -97,15 +103,11 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: extractCommonCss.extract([ 'css-loader', 'postcss-loader' ])
+                use: ExtractTextPlugin.extract(['css-loader', 'postcss-loader'])
             }
         ]
     },
     plugins: [
-        new ExtractTextPlugin('styles.css'),
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     name: ['vendor', 'manifest'] // 指定公共 bundle 的名字
-        // }),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor',
             minChunks: function (module) {
@@ -115,6 +117,13 @@ module.exports = {
                     && (module.context.indexOf('node_modules') !== -1
                     || module.context.indexOf('src/static') !== -1);
             }
+        }),
+        new ExtractTextPlugin('[name].[contenthash].css'),
+        new WebpackMd5Hash(),
+        new ManifestPlugin(),
+        new ChunkManifestPlugin({
+            filename: 'chunk-manifest.json',
+            manifestVariable: 'webpackManifest'
         })
     ]
 };

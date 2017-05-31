@@ -1,3 +1,6 @@
+require('STYLES/reset.css');
+require('STYLES/global.css');
+
 import * as util from 'SCRIPTS/util'
 import helper from 'SCRIPTS/helper'
 

@@ -11,12 +11,16 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const extractPageCss = new ExtractTextPlugin('[name].[contenthash:7].css');
+const extractCommonCss = new ExtractTextPlugin('common.[contenthash:7].css');
 
 const ManifestPlugin = require('webpack-manifest-plugin');
 
 const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
 
 const WebpackMd5Hash = require('webpack-md5-hash');
+
+const autoprefixer = require('autoprefixer');
 
 const helper = require('./helper');
 const cwd = helper.cwd,
@@ -71,8 +75,8 @@ module.exports = {
     output: {
         path: path.resolve(cwd, 'dest'),
         publicPath: '/dest/', // webpack-dev-server访问的路径
-        filename: isProduction() ? '[name].[chunkhash].js' : '[name].js',
-        chunkFilename: isProduction() ? '[name].[chunkhash].js' : '[name].js',
+        filename: isProduction() ? '[name].[chunkhash:7].js' : '[name].js',
+        chunkFilename: isProduction() ? '[name].[chunkhash:7].js' : '[name].js',
     },
     resolve: {
         modules: [
@@ -103,22 +107,77 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ExtractTextPlugin.extract(['css-loader', 'postcss-loader'])
+                include: [
+                    path.resolve(cwd, 'src/view')
+                ],
+                use: extractPageCss.extract({
+                    fallback: 'style-loader',
+                    use: ['css-loader', {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: (loader) => [require('autoprefixer')()]
+                        }
+                    }]
+                })
+            },
+            {
+                test: /\.(sass|scss)$/,
+                include: [
+                    path.resolve(cwd, 'src/view')
+                ],
+                use: extractPageCss.extract({
+                    fallback: 'style-loader',
+                    use: ['css-loader', 'sass-loader']
+                })
+            },
+            {
+                test: /\.css$/,
+                include: [
+                    path.resolve(cwd, 'src/static')
+                ],
+                use: extractCommonCss.extract({
+                    fallback: 'style-loader',
+                    use: ['css-loader', {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: (loader) => [require('autoprefixer')()]
+                        }
+                    }]
+                })
+            },
+            {
+                test: /\.(sass|scss)$/,
+                include: [
+                    path.resolve(cwd, 'src/static')
+                ],
+                use: extractCommonCss.extract({
+                    fallback: 'style-loader',
+                    use: ['css-loader', 'sass-loader']
+                })
             }
         ]
     },
     plugins: [
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor',
+            filename: isProduction() ? 'vendor.[chunkhash:7].js' : 'vendor.js',
             minChunks: function (module) {
                 // this assumes your vendor imports exist in the node_modules directory
-                console.log(module.context);
                 return module.context
                     && (module.context.indexOf('node_modules') !== -1
-                    || module.context.indexOf('src/static') !== -1);
+                    || module.context.indexOf('src/static/script') !== -1);
             }
         }),
-        new ExtractTextPlugin('[name].[contenthash].css'),
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name: 'common',
+        //     filename: isProduction() ? 'common.[chunkhash:7].css' : 'common.css',
+        //     minChunks: function (module) {
+        //         return module.context
+        //             && (module.context.indexOf('src/static/style') !== -1);
+        //     }
+        // }),
+        extractPageCss,
+        extractCommonCss,
         new WebpackMd5Hash(),
         new ManifestPlugin(),
         new ChunkManifestPlugin({

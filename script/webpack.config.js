@@ -68,10 +68,20 @@ const getPagesEntry = () => {
     return ps;
 };
 
+const pageEntries = getPagesEntry();
+
+const htmlWebpackPlugins = Object.keys(pageEntries).map(p => {
+    return new HtmlWebpackPlugin({
+        filename: `${p}.html`,
+        title: p,
+        template: pageEntries[p].replace('.js', '.html')
+    });
+});
+
 module.exports = {
     devtool: isProduction() ? 'cheap-module-source-map' : 'eval-source-map',
     context: path.resolve(cwd, 'src'),
-    entry: Object.assign(getPagesEntry(), {}),
+    entry: Object.assign(pageEntries, {}),
     output: {
         path: path.resolve(cwd, 'dest'),
         publicPath: '/dest/', // webpack-dev-server访问的路径
@@ -176,5 +186,5 @@ module.exports = {
             filename: 'chunk-manifest.json',
             manifestVariable: 'webpackManifest'
         })
-    ]
+    ].concat(htmlWebpackPlugins)
 };

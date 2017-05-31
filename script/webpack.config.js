@@ -168,14 +168,6 @@ module.exports = {
                     || module.context.indexOf('src/static/script') !== -1);
             }
         }),
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     name: 'common',
-        //     filename: isProduction() ? 'common.[chunkhash:7].css' : 'common.css',
-        //     minChunks: function (module) {
-        //         return module.context
-        //             && (module.context.indexOf('src/static/style') !== -1);
-        //     }
-        // }),
         extractPageCss,
         extractCommonCss,
         new WebpackMd5Hash(),

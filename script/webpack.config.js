@@ -81,7 +81,10 @@ const htmlWebpackPlugins = Object.keys(pageEntries).map(p => {
 module.exports = {
     devtool: isProduction() ? 'cheap-module-source-map' : 'eval-source-map',
     context: path.resolve(cwd, 'src'),
-    entry: Object.assign(pageEntries, {}),
+    entry: Object.assign(pageEntries, {
+        // commonStyle: '' /* a generated js file */,
+        // commonScript: '' /* a generated js file */
+    }),
     output: {
         path: path.resolve(cwd, 'dest'),
         publicPath: '/dest/', // webpack-dev-server访问的路径

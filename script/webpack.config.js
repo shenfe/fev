@@ -178,7 +178,7 @@ module.exports = {
                 // this assumes your vendor imports exist in the node_modules directory
                 return module.context
                     && (module.context.indexOf('node_modules') !== -1
-                    || module.context.indexOf('src/static/script') !== -1);
+                    || module.context.split('\\').join('/').indexOf('src/static/script') !== -1);
             }
         }),
         extractPageCss,

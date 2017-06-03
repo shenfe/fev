@@ -81,7 +81,7 @@ A simple and universal architecture for frontend projects.
         │
         └── static
             │
-            ├── app.js
+            ├── app.js          # if SPA
             │
             ├── page1.js
             ├── page1.css
@@ -89,8 +89,11 @@ A simple and universal architecture for frontend projects.
             ├── page2.css
             ├── ...
             │
-            ├── common.js
-            └── common.css
+            ├── common.1.js
+            ├── common.1.css
+            ├── common.2.js
+            ├── common.2.css
+            └── ...
 
 因此：
 
@@ -207,32 +210,31 @@ All mock data.
         },
         methods: {/**/}
     };
-    
+
 `*.vue` 文件导出的组件默认为 Vue 组件类型。而一般地，组件要导出为一个 object，请指明组件的类型，即它最终会被传入哪种构造函数进而构造出实例。
 
     var MyComponent = {
         type: 'velocity',
-        
+
         // 如果数据需要通过js进行转换
         data: function (data) {
             return data;
         },
-        
+
         // 如果数据需要使用另一个模板转换
         data: require('./data.vm'),
-        
+
         template: require('./index.vm'),
-        
+
         // will be DOMs as soon as the DOM is ready
         elements: {
             el1: '#el1',
             el2: '[node-type~="el2"]'
         },
-        
+
         methods: {},
-        
+
         // get data from DOMs, bind events, and so on
         ready: function () {}
     };
     module.exports = MyComponent;
-

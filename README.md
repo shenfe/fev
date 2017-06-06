@@ -181,21 +181,25 @@ All mock data.
     }
     export default MyComponent
 
-或者
+Or
 
     var MyComponent = function (props) {/**/};
     MyComponent.prototype.render = function () {/**/};
     module.exports = MyComponent;
+
+However, prototype-based class definition is not recommended now.
 
 ### 编写函数式组件
 
     const MyComponent = (props) => {/**/}
     export default MyComponent
 
-或者
+Or
 
     var MyComponent = function (props) {/**/};
     module.exports = MyComponent;
+
+They are all pure functions.
 
 ### 编写对象构造组件
 
@@ -224,6 +228,7 @@ All mock data.
         // 如果数据需要使用另一个模板转换
         data: require('./data.vm'),
 
+        // specify the main template; `index/*` will be imported by default
         template: require('./index.vm'),
 
         // will be DOMs as soon as the DOM is ready

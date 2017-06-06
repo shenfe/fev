@@ -1,12 +1,12 @@
 <template>
-    <p>Hello! This is {{greeting}}</p>
+    <p>Hello! This is {{moduleName}}.</p>
 </template>
 
 <script>
 module.exports = {
     data: function () {
         return {
-            greeting: 'module2'
+            moduleName: 'module2'
         };
     }
 };

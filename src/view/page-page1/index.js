@@ -14,8 +14,10 @@ import other from './other'
 
 const method2 = Symbol('method2');
 
-export default class Page1 {
-    constructor(data) {}
+class Page1 {
+    constructor() {
+
+    }
 
     method1() {}
 
@@ -23,3 +25,7 @@ export default class Page1 {
 
     static method3() {}
 }
+
+new Page1();
+
+export default Page1

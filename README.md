@@ -219,6 +219,7 @@ They are all pure functions.
 
     var MyComponent = {
         type: 'velocity',
+        name: 'MyComponent',
 
         // 如果数据需要通过js进行转换
         data: function (data) {

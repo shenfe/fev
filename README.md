@@ -148,7 +148,7 @@ Run an extra server for proxy requests or resources.
 All mock data.
 
 
-## 组件的编写
+## Write a Component
 
 把`view/`中的 page、module、component 统称为组件。组件对任何外部或内部的依赖，都在 js 中使用 require 或 import 引入。
 
@@ -244,3 +244,7 @@ They are all pure functions.
         ready: function () {}
     };
     module.exports = MyComponent;
+
+## Build Project Files
+
+In fact, common files are not all static files. Two dimentions should be taken into consideration, mutuation and 

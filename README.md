@@ -247,4 +247,17 @@ They are all pure functions.
 
 ## Build Project Files
 
-In fact, common files are not all static files. Two dimentions should be taken into consideration, mutuation and 
+In fact, common files and static files are not equal. Two dimentions should be taken into consideration, code mutation and universality.
+
+Dynamic logic codes are those always changing with production requirements, usually related to the business logic in web pages.
+
+Universal helping codes are the libraries, utilities, vendors, reset styles, UI widgets and so on, which seldom alter, do not rely on the logic in any page but are required by most pages in different degrees.
+
+At times, there is some universal logic codes as well (e.g. global styles, common constants and procedures, server-side APIs, data-processing helper functions), which could be included and built into either page logic codes or common codes optionally.
+
+We encourage that, each page has its own static code and dynamic code as it requires, and different pages may share the same static code because two points: 
+
+* Their requirements of static codes are the same.
+* Each file are named by its content hash.
+
+Universal logic codes are packed into page logic, as we suppose that there should not be too much universal logic required by a page.

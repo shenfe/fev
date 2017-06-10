@@ -9,7 +9,7 @@ import * as request from './util/request'
 import * as url from './util/url'
 import * as cookie from './util/cookie'
 import * as storage from './util/storage'
-import te from './util/velocity.min.js'
+require('./util/velocity.js');
 
 export default {
     pubsub,
@@ -18,7 +18,7 @@ export default {
     cookie,
     storage,
     render: (template, context, mode) => {
-        let result = te.render(template, context);
+        let result = window.velocity.render(template, context);
         if (mode === 'raw') { /* server rendering */
             //TODO: hide data into output
         }

@@ -11,8 +11,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const extractPageCss = new ExtractTextPlugin('[name].[contenthash:7].css');
-const extractCommonCss = new ExtractTextPlugin('common.[contenthash:7].css');
+const extractPageCss = new ExtractTextPlugin('[name]/[name].[contenthash:7].css');
+const extractCommonCss = new ExtractTextPlugin('common/common.[contenthash:7].css');
 
 const ManifestPlugin = require('webpack-manifest-plugin');
 
@@ -74,7 +74,7 @@ const htmlWebpackPlugins = Object.keys(pageEntries).map(p => {
     return new HtmlWebpackPlugin({
         filename: `${p}.html`,
         title: p,
-        template: pageEntries[p].replace('.js', '.html')
+        template: pageEntries[p].replace('.js', '.ejs')
     });
 });
 
@@ -88,7 +88,7 @@ module.exports = {
     output: {
         path: path.resolve(cwd, 'dest'),
         publicPath: '/dest/', // webpack-dev-server访问的路径
-        filename: isProduction() ? '[name].[chunkhash:7].js' : '[name].js',
+        filename: isProduction() ? '[name]/[name].[chunkhash:7].js' : '[name]/[name].js',
         chunkFilename: isProduction() ? '[name].[chunkhash:7].js' : '[name].js',
     },
     resolve: {
@@ -116,7 +116,11 @@ module.exports = {
             },
             {
                 test: /\.vm$/,
-                use: ['vm-loader']
+                use: ['raw-loader']
+            },
+            {
+                test: /\.html/,
+                use: ['raw-loader']
             },
             {
                 test: /\.css$/,
@@ -172,10 +176,15 @@ module.exports = {
     },
     plugins: [
         new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor',
-            filename: isProduction() ? 'vendor.[chunkhash:7].js' : 'vendor.js',
-            minChunks: function (module) {
-                // this assumes your vendor imports exist in the node_modules directory
+            name: 'common',
+            filename: isProduction() ? '[name]/[name].[chunkhash:7].js' : '[name]/[name].js',
+            minChunks: function (module, count) {
+                // This prevents stylesheet resources with the .css or .scss extension
+                // from being moved from their original chunk to the vendor chunk
+                if (module.resource && (/^.*\.(css|scss)$/).test(module.resource)) {
+                    return false;
+                }
+                // This assumes your vendor imports exist in the node_modules directory
                 return module.context
                     && (module.context.indexOf('node_modules') !== -1
                     || module.context.split('\\').join('/').indexOf('src/static/script') !== -1);
@@ -183,11 +192,11 @@ module.exports = {
         }),
         extractPageCss,
         extractCommonCss,
-        new WebpackMd5Hash(),
-        new ManifestPlugin(),
-        new ChunkManifestPlugin({
-            filename: 'chunk-manifest.json',
-            manifestVariable: 'webpackManifest'
-        })
+        new WebpackMd5Hash()
+        // ,new ManifestPlugin(),
+        // new ChunkManifestPlugin({
+        //     filename: 'chunk-manifest.json',
+        //     manifestVariable: 'webpackManifest'
+        // })
     ].concat(htmlWebpackPlugins)
 };

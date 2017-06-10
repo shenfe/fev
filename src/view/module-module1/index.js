@@ -4,7 +4,7 @@
 
 import api from 'CONTROLLERS/api'
 
-import Component1 from 'VIEWS/component-component1'
+import Component1 from 'VIEWS/component-component1/index.jsx'
 
 export default {
     type: 'velocity',

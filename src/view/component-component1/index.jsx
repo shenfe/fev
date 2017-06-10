@@ -1,8 +1,6 @@
 const Component1 = ({ onClick, complete, text }) => (
-    <li
-        onClick={onClick}
-        style={{textDecoration: complete ? 'line-through' : 'none'}}
-    >
+    <li onClick={onClick}
+        style={{textDecoration: complete ? 'line-through' : 'none'}}>
         {text}
     </li>
 );

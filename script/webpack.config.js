@@ -74,6 +74,7 @@ const htmlWebpackPlugins = Object.keys(pageEntries).map(p => {
     return new HtmlWebpackPlugin({
         filename: `${p}.html`,
         title: p,
+        excludeChunks: Object.keys(pageEntries).filter(q => p !== q),
         template: pageEntries[p].replace('.js', '.ejs')
     });
 });
@@ -190,8 +191,8 @@ module.exports = {
                     || module.context.split('\\').join('/').indexOf('src/static/script') !== -1);
             }
         }),
-        extractPageCss,
         extractCommonCss,
+        extractPageCss,
         new WebpackMd5Hash()
         // ,new ManifestPlugin(),
         // new ChunkManifestPlugin({

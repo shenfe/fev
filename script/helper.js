@@ -17,8 +17,16 @@ const isProduction = () => {
     return process.env.NODE_ENV === 'production';
 };
 
+const read = fileName => fs.readFileSync(fileName, 'utf8');
+
+const vlc = require('./helper/velocity');
+
+const render = (template, context) => vlc.render(template, context);
+
 module.exports = {
     cwd,
     getDirs,
-    isProduction
+    isProduction,
+    readFile: read,
+    makeFile: render
 };

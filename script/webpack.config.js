@@ -70,12 +70,21 @@ const getPagesEntry = () => {
 
 const pageEntries = getPagesEntry();
 
+const pageTemplateRender = (filePath, options) => {
+    let tmpl = helper.readFile(path.resolve(cwd, 'src', filePath)),
+        data = options;
+    return helper.makeFile(tmpl, data);
+};
+
 const htmlWebpackPlugins = Object.keys(pageEntries).map(p => {
     return new HtmlWebpackPlugin({
         filename: `${p}.html`,
-        title: p,
         excludeChunks: Object.keys(pageEntries).filter(q => p !== q),
-        template: pageEntries[p].replace('.js', '.ejs')
+        templateContent: pageTemplateRender(pageEntries[p].replace('.js', '.html'), {
+            title: p,
+            description: `sample page ${p}`
+        }),
+        favicon: path.resolve(cwd, 'src/static/image/favicon.ico')
     });
 });
 

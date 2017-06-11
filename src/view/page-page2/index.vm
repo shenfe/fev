@@ -6,10 +6,10 @@
         <title>${title}</title>
     </head>
     <body>
-        <div>
-            <module3></module3>
-        </div>
+        <!-- module3, pre-render -->
+        <div module="module3">#parse("./module-module3/index.vm")</div>
 
-        <footer></footer>
+        <!-- module4, self-render -->
+        <div module="module4"></div>
     </body>
 </html>

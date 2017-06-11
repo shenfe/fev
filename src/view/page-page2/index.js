@@ -5,20 +5,39 @@
 require('STYLES/reset.css');
 require('STYLES/global.css');
 
-const $ = function (sel) {
-    return window.document.querySelector(sel);
+const module3 = require('./module-module3/index.js');
+const module4 = require('VIEWS/module-module4/index.js');
+
+const documentReady = fn => {
+    if (document.addEventListener) { // 标准浏览器
+        document.addEventListener('DOMContentLoaded', function () {
+            // 注销避免重复触发
+            document.removeEventListener('DOMContentLoaded', arguments.callee, false);
+            fn();
+        }, false);
+    } else if (document.attachEvent) { // IE浏览器
+        document.attachEvent('onreadystatechange', function () {
+            if (document.readyState === 'complete') {
+                document.detachEvent('onreadystatechange', arguments.callee);
+                fn();
+            }
+        });
+    }
 };
 
-const module3 = require('./module-module3/index.html');
-
 class Page2 {
-    // dom ready
     constructor() {
-        let $module3 = $('module3');
-        $module3.outerHTML = $module3.outerHTML.replace(/module3/g, 'div');
-        $module3.innerHTML = module3;
-    }
+        this.$module3 = new module3();
+        this.$module4 = new module4();
 
+        documentReady(() => {
+            this.ready(document.body);
+        });
+    }
+    ready($el) {
+        this.$module3.ready($el.querySelector('[module="module3"]'));
+        this.$module4.render($el.querySelector('[module="module4"]'));
+    }
     method1() {}
 }
 

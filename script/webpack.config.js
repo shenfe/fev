@@ -73,6 +73,15 @@ const pageEntries = getPagesEntry();
 const pageTemplateRender = (filePath, options) => {
     let tmpl = helper.readFile(path.resolve(cwd, 'src', filePath)),
         data = options;
+    let findModulesToParse = string => {
+        let match, result = [];
+        let regexp = /(?:#parse\(")([^\(\)]*)(?:"\))/g;
+        while ((match = regexp.exec(string)) != null) {
+            result.push(match);
+        }
+        return result;
+    };
+    //TODO
     return helper.makeFile(tmpl, data);
 };
 
@@ -80,7 +89,7 @@ const htmlWebpackPlugins = Object.keys(pageEntries).map(p => {
     return new HtmlWebpackPlugin({
         filename: `${p}.html`,
         excludeChunks: Object.keys(pageEntries).filter(q => p !== q),
-        templateContent: pageTemplateRender(pageEntries[p].replace('.js', '.html'), {
+        templateContent: pageTemplateRender(pageEntries[p].replace('.js', '.vm'), {
             title: p,
             description: `sample page ${p}`
         }),

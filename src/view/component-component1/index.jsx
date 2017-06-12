@@ -1,10 +1,18 @@
-const Component1 = ({ onClick, complete, text }) => (
-    <li onClick={onClick}
-        style={{textDecoration: complete ? 'line-through' : 'none'}}>
-        {text}
-    </li>
-);
+import React from 'react'
+
+const Component1 = ({ onClick, color, text }) => {
+    return (
+        <a onClick={onClick}
+            style={{color: color}}>
+            This is {text}!
+        </a>
+    );
+};
+
+// Component1.propTypes = {
+//     text: React.PropTypes.string.isRequired
+// };
 
 Component1.type = 'react';
 
-export default Component1
+export { Component1 };

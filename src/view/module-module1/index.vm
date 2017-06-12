@@ -1,4 +1,2 @@
-<p>Hello! This is ${greeting}</p>
-<ul node-type="list">
-
-</ul>
+<span node-type="title">This is ${moduleName}!</span>
+<div component="component1"></div>

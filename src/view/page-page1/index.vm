@@ -7,8 +7,8 @@
     </head>
     <body>
         <div>
-            <module1></module1>
-            <module2></module2>
+            <div module="module1"></div>
+            <div module="module2"></div>
         </div>
 
         <footer></footer>

@@ -6,7 +6,7 @@
 
 console.log('Module4 is defined.');
 
-const tmpl = require('./index.html');
+const tmpl = require('./index.vm');
 
 import { usePubSub, useVelocity } from 'SCRIPTS/decorator'
 

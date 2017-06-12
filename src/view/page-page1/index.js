@@ -4,6 +4,8 @@ require('STYLES/global.css');
 // import * as util from 'SCRIPTS/util'
 import helper from 'SCRIPTS/helper'
 
+import Vue from 'vue'
+
 var modules = {
     module1: require('VIEWS/module-module1'),
     module2: require('./module-module2/index.vue')
@@ -12,22 +14,15 @@ var modules = {
 import headerStyle from './header.scss'
 var footerTemplate = require('./footer.html');
 
-import other from './other'
-
 const method2 = Symbol('method2');
 
-const $ = function (sel) {
-    return window.document.querySelector(sel);
-};
+import { Page } from 'SCRIPTS/fev'
 
-class Page1 {
+class Page1 extends Page {
     // dom ready
     constructor() {
+        super();
         this.modules = {};
-        for (let moduleId in modules) {
-            console.log(moduleId, modules[moduleId]);
-            // this[moduleId] = new modules[moduleId]($(moduleId));
-        }
     }
 
     method1() {}
@@ -35,6 +30,18 @@ class Page1 {
     [method2]() {}
 
     static method3() {}
+
+    ready($body) {
+        for (let moduleId in modules) {
+            console.log(moduleId, modules[moduleId]);
+            if (modules[moduleId].type === 'vue') {
+                modules[moduleId].el = `[module="${moduleId}"]`;
+                this[moduleId] = new Vue(modules[moduleId]);
+            } else {
+                this[moduleId] = new modules[moduleId]($body.querySelector(`[module="${moduleId}"]`));
+            }
+        }
+    }
 }
 
 new Page1();

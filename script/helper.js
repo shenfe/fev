@@ -23,10 +23,26 @@ const vlc = require('./helper/velocity');
 
 const render = (template, context) => vlc.render(template, context);
 
+const matchReg = (string, regexp) => {
+    let match, result = [];
+    while ((match = regexp.exec(string)) != null) {
+        result.push(match);
+    }
+    return result;
+};
+
+if (!String.prototype.replaceAll) {
+    String.prototype.replaceAll = function (search, replacement) {
+        var target = this;
+        return target.split(search).join(replacement);
+    };
+}
+
 module.exports = {
     cwd,
     getDirs,
     isProduction,
     readFile: read,
-    makeFile: render
+    makeFile: render,
+    matchReg
 };

@@ -70,19 +70,26 @@ const getPagesEntry = () => {
 
 const pageEntries = getPagesEntry();
 
-const pageTemplateRender = (filePath, options) => {
-    let tmpl = helper.readFile(path.resolve(cwd, 'src', filePath)),
-        data = options;
-    let findModulesToParse = string => {
-        let match, result = [];
-        let regexp = /(?:#parse\(")([^\(\)]*)(?:"\))/g;
-        while ((match = regexp.exec(string)) != null) {
-            result.push(match);
-        }
-        return result;
+const templateExtract = absFilePath => {
+    console.log('templateExtract: ' + absFilePath);
+    let tmpl = helper.readFile(absFilePath);
+    let findParses = helper.matchReg(tmpl, /(?:#parse\(")([^\(\)]*)(?:"\))/g)
+        .concat(helper.matchReg(tmpl, /(?:#parse\(')([^\(\)]*)(?:'\))/g));
+    let getFileDir = p => {
+        let splitter = p.indexOf('/') >= 0 ? '/' : '\\';
+        let dirs = p.split(splitter);
+        dirs.pop();
+        return dirs.join(splitter);
     };
-    //TODO
-    return helper.makeFile(tmpl, data);
+    findParses.forEach(p => {
+        tmpl = tmpl.replaceAll(p[0], templateExtract(path.resolve(getFileDir(absFilePath), p[1])));
+    });
+    return tmpl;
+};
+
+const pageTemplateRender = (filePath, options) => {
+    let tmpl = templateExtract(path.resolve(cwd, 'src', filePath));
+    return helper.makeFile(tmpl, options);
 };
 
 const htmlWebpackPlugins = Object.keys(pageEntries).map(p => {
@@ -100,10 +107,7 @@ const htmlWebpackPlugins = Object.keys(pageEntries).map(p => {
 module.exports = {
     devtool: isProduction() ? 'cheap-module-source-map' : 'eval-source-map',
     context: path.resolve(cwd, 'src'),
-    entry: Object.assign(pageEntries, {
-        // commonStyle: '' /* a generated js file */,
-        // commonScript: '' /* a generated js file */
-    }),
+    entry: Object.assign(pageEntries, {}),
     output: {
         path: path.resolve(cwd, 'dest'),
         publicPath: '/dest/', // webpack-dev-server访问的路径

@@ -5,20 +5,20 @@
 require('STYLES/reset.css');
 require('STYLES/global.css');
 
-const module3 = require('./module-module3/index.js');
-const module4 = require('VIEWS/module-module4/index.js');
+import module3 from './module-module3/index.js'
+import module4 from 'VIEWS/module-module4/index.js'
 
 const documentReady = fn => {
     if (document.addEventListener) { // 标准浏览器
         document.addEventListener('DOMContentLoaded', function () {
             // 注销避免重复触发
-            document.removeEventListener('DOMContentLoaded', arguments.callee, false);
+            document.removeEventListener('DOMContentLoaded', fn, false);
             fn();
         }, false);
     } else if (document.attachEvent) { // IE浏览器
         document.attachEvent('onreadystatechange', function () {
             if (document.readyState === 'complete') {
-                document.detachEvent('onreadystatechange', arguments.callee);
+                document.detachEvent('onreadystatechange', fn);
                 fn();
             }
         });

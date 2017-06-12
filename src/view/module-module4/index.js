@@ -8,12 +8,13 @@ console.log('Module4 is defined.');
 
 const tmpl = require('./index.html');
 
-import { render } from 'SCRIPTS/util'
+import { render } from 'SCRIPTS/util.js'
+debugger;
 
 export default class Module4 {
     constructor() {
-        let dt = `${dt.getFullYear()}-${dt.getMonth()+1}-${dt.getDate()}`;
-        this.createTime = dt;
+        let dt = new Date();
+        this.createTime = `${dt.getFullYear()}-${dt.getMonth()+1}-${dt.getDate()}`;
     }
     render($container) {
         $container.innerHTML = render(tmpl, {

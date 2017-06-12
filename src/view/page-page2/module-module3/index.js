@@ -8,8 +8,8 @@ console.log('Module3 is defined.');
 
 export default class Module3 {
     constructor() {
-        let dt = `${dt.getFullYear()}-${dt.getMonth()+1}-${dt.getDate()}`;
-        this.createTime = dt;
+        let dt = new Date();
+        this.createTime = `${dt.getFullYear()}-${dt.getMonth()+1}-${dt.getDate()}`;
     }
     ready($el) {
         $el.querySelector('[node-type="title"]').addEventListener('click', (e) => {

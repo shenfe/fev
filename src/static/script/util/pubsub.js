@@ -24,34 +24,8 @@ let findCallback = (eventId, listenerId) => {
     return null;
 };
 
-/**
- * Whether to use symbol instead of string
- * @type {boolean}
- */
-const useSymbolInsteadOfString = true;
-
-let id, generateId, on, once, off, trigger;
-if (useSymbolInsteadOfString) {
-    id = Symbol('id');
-    generateId = () => Symbol('id');
-
-    on = Symbol('on');
-    once = Symbol('once');
-    off = Symbol('off');
-    trigger = Symbol('trigger');
-} else {
-    id = 'id';
-    let idCounter = 0;
-    generateId = () => {
-        idCounter++;
-        return idCounter;
-    };
-
-    on = 'on';
-    once = 'once';
-    off = 'off';
-    trigger = 'trigger';
-}
+const id = Symbol('id');
+const generateId = () => Symbol('id');
 
 /**
  * On event
@@ -59,7 +33,7 @@ if (useSymbolInsteadOfString) {
  * @param callback
  * @param once
  */
-Object.prototype[on] = function (eventIds, callback, once) {
+const pOn = function (eventIds, callback, once) {
     if (typeof callback === 'function') callback = callback.bind(this);
 
     let eventIdList;
@@ -109,21 +83,11 @@ Object.prototype[on] = function (eventIds, callback, once) {
 };
 
 /**
- * On event by once
- * @param eventIds
- * @param callback
- * @returns {*}
- */
-Object.prototype[once] = function (eventIds, callback) {
-    return this[on](eventIds, callback, true);
-};
-
-/**
  * Off event
  * @param eventIds
  * @param callback
  */
-Object.prototype[off] = function (eventIds, callback) {
+const pOff = function (eventIds, callback) {
     if (!!this[id]) return;
     let listenerId = this[id];
 
@@ -169,7 +133,7 @@ Object.prototype[off] = function (eventIds, callback) {
  * @param data
  * @returns {boolean}
  */
-Object.prototype[trigger] = function (eventIds, data) {
+const pTrigger = function (eventIds, data) {
     let eventIdList;
     if (typeof eventIds === 'string' && eventIds.trim() !== '') {
         eventIdList = eventIds.split(',').map(e => e.trim());
@@ -195,4 +159,20 @@ Object.prototype[trigger] = function (eventIds, data) {
     }
 };
 
-export default { on, once, off, trigger }
+const on = Symbol('on');
+const off = Symbol('off');
+const trigger = Symbol('trigger');
+
+const pubsub = (proto, useSymbol) => {
+    if (useSymbol) {
+        proto[on] = pOn;
+        proto[off] = pOff;
+        proto[trigger] = pTrigger;
+    } else {
+        proto['on'] = pOn;
+        proto['off'] = pOff;
+        proto['trigger'] = pTrigger;
+    }
+};
+
+export default { pubsub, on, off, trigger }

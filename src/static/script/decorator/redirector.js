@@ -52,4 +52,4 @@ function redirector(obj) {
     };
 }
 
-export default { redirector }
+export default redirector

@@ -28,3 +28,7 @@ const render = (template, context, mode) => {
 };
 
 export { render }
+
+export function useVelocity(targetClass) {
+    targetClass.prototype.tmpl = render;
+}

@@ -6,10 +6,7 @@
         <title>${title}</title>
     </head>
     <body>
-        <!-- module3, pre-render -->
         <div module="module3">#parse("./module-module3/index.vm")</div>
-
-        <!-- module4, self-render -->
         <div module="module4"></div>
     </body>
 </html>

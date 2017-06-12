@@ -8,16 +8,17 @@ console.log('Module4 is defined.');
 
 const tmpl = require('./index.html');
 
-import { render } from 'SCRIPTS/util.js'
-debugger;
+import { usePubSub, useVelocity } from 'SCRIPTS/decorator'
 
-export default class Module4 {
+@usePubSub
+@useVelocity
+class Module4 {
     constructor() {
         let dt = new Date();
         this.createTime = `${dt.getFullYear()}-${dt.getMonth()+1}-${dt.getDate()}`;
     }
     render($container) {
-        $container.innerHTML = render(tmpl, {
+        $container.innerHTML = this.tmpl(tmpl, {
             moduleName: 'module4'
         });
 
@@ -26,6 +27,9 @@ export default class Module4 {
     ready($el) {
         $el.querySelector('[node-type="title"]').addEventListener('click', (e) => {
             alert(this.createTime);
+            this.trigger('module4-clicked');
         }, false);
     }
 }
+
+export default Module4

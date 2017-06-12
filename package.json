@@ -5,8 +5,9 @@
     "preview": "node ./script/preview.js",
     "proxy": "node ./script/proxie.js",
     "server": "webpack-dev-server --inline --hot",
-    "dev": "rm ./dest -rf && mkdir dest && cross-env NODE_ENV=development PLATFORM=web webpack --config script/webpack.config.js --watch --progress --colors",
-    "pro": "rm ./dest -rf && mkdir dest && cross-env NODE_ENV=production PLATFORM=web webpack --config script/webpack.config.js --progress --colors"
+    "clean": "rm ./dest/* -rf",
+    "dev": "rm ./dest/* -rf && cross-env NODE_ENV=development PLATFORM=web webpack --config script/webpack.config.js --watch --progress --colors",
+    "pro": "rm ./dest/* -rf && cross-env NODE_ENV=production PLATFORM=web webpack --config script/webpack.config.js --progress --colors"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.1",

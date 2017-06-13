@@ -5,11 +5,14 @@
 const webpack = require('webpack');
 const webpackConfigCreator = require('./webpack.config.creator');
 
+let compiler;
+
 module.exports = viewPath => {
     console.log('building ' + viewPath);
-    webpack(webpackConfigCreator([viewPath], {
+    compiler = webpack(webpackConfigCreator([viewPath], {
         isProduction: true
-    }), (err, stats) => {
+    }));
+    compiler.run((err, stats) => {
         // ...
     });
 };

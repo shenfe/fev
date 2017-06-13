@@ -25,4 +25,10 @@ if (!(args.length === 0 || (args.length === 1 && args[0] === 'all'))) {
 // build the views
 viewList.forEach(builder);
 
-//TODO: prepare the preview page
+fs.writeFileSync(path.resolve(cwd, 'mock/ls.html'),
+    viewList.map(p => {
+        if (p.startsWith('page-') || p.startsWith('module-') || p.startsWith('component-')) {
+            p = p.substr(p.indexOf('-') + 1);
+        }
+        return `<div><a href="/${p}.html">${p}.html</a></div>`;
+    }).join(''));

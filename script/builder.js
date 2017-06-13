@@ -10,7 +10,8 @@ let compiler;
 module.exports = viewPath => {
     console.log('building ' + viewPath);
     compiler = webpack(webpackConfigCreator([viewPath], {
-        isProduction: true
+        isProduction: true,
+        fromBuilder: true
     }));
     compiler.run((err, stats) => {
         // ...

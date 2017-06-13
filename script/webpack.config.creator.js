@@ -249,6 +249,7 @@ module.exports = (specifiedEntries, options) => {
             }),
             // 自定义插件函数，函数会接受到webpack的编译对象compiler（用this同样也能获取到）
             function (compiler) {
+                if (options && options.fromBuilder) return;
                 this.plugin('done', function (stats) { // 使用.plugin api增加自定义插件，'done'表示触发时机为编译结束后，stats表示编译生成的模块的详细信息
                     fs.writeFileSync(path.resolve(cwd, 'mock/ls.html'), Object.keys(entries).map(p => `<div><a href="/${p}.html">${p}.html</a></div>`).join(''));
                     !isPro && require('open')((devServerConfig.https ? 'https' : 'http') + `://127.0.0.1:${devServerConfig.port}/ls.html`); // 在编译完成后控制自动唤起浏览器并打开项目的入口页面

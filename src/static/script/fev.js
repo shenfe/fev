@@ -2,11 +2,11 @@
  * Created by godzilla on 6/11/17.
  */
 
-import { documentReady } from 'SCRIPTS/util'
+import { domready } from './domready'
 
 class Page {
     constructor() {
-        documentReady(() => {
+        domready(() => {
             this.$el = document.body;
             window.setTimeout(() => {
                 this.ready(document.body);
@@ -18,6 +18,8 @@ class Page {
 
 class Module {
     constructor($container, data) {
+        $container = $container || document.body;
+        data = data || {};
         this.$data = this.data(data, $container);
         this.$el = this.render($container) || $container;
         this.ready(this.$el);

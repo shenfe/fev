@@ -28,20 +28,3 @@ const render = (template, context, mode) => {
 };
 
 export { render }
-
-export function documentReady(fn) {
-    if (document.addEventListener) { // 标准浏览器
-        document.addEventListener('DOMContentLoaded', function () {
-            // 注销避免重复触发
-            document.removeEventListener('DOMContentLoaded', fn, false);
-            fn();
-        }, false);
-    } else if (document.attachEvent) { // IE浏览器
-        document.attachEvent('onreadystatechange', function () {
-            if (document.readyState === 'complete') {
-                document.detachEvent('onreadystatechange', fn);
-                fn();
-            }
-        });
-    }
-};

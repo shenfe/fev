@@ -6,6 +6,7 @@
 
 const webpack = require('webpack');
 
+const fs = require('fs');
 const path = require('path');
 
 const helper = require('./helper');
@@ -107,8 +108,8 @@ module.exports = (specifiedEntries, options) => {
     specifiedPages = specifiedEntries;
     let entries = getPagesEntry();
     let isPro = (options && options.isProduction) || isProduction();
-    let extractPageCss = new ExtractTextPlugin(isPro ? '[name]/[name].[contenthash:7].css' : '[name]/[name].css');
-    let extractCommonCss = new ExtractTextPlugin(isPro ? 'common/common.[contenthash:7].css' : 'common/common.css');
+    let extractPageCss = new ExtractTextPlugin('[name]/[name].[contenthash:7].css');
+    let extractCommonCss = new ExtractTextPlugin('common/common.[contenthash:7].css');
     return {
         devtool: isPro ? 'cheap-module-source-map' : 'eval-source-map',
         target: 'web',
@@ -116,9 +117,9 @@ module.exports = (specifiedEntries, options) => {
         entry: Object.assign(entries, {}),
         output: {
             path: path.resolve(cwd, 'dest'),
-            publicPath: '/dest/', // webpack-dev-server访问的路径
-            filename: isPro ? '[name]/[name].[chunkhash:7].js' : '[name]/[name].js',
-            chunkFilename: isPro ? '[name].[chunkhash:7].js' : '[name].js',
+            publicPath: '/', // dev-server访问的路径
+            filename: '[name]/[name].[chunkhash:7].js',
+            chunkFilename: '[name].[chunkhash:7].js',
         },
         resolve: {
             modules: [
@@ -133,7 +134,7 @@ module.exports = (specifiedEntries, options) => {
             }
         },
         watch: !isPro,
-        devServer: devServerConfig,
+        devServer: isPro ? undefined : devServerConfig,
         performance: {
             hints: isPro ? 'error' : 'warning', // 当资源不符合性能规则时，以什么方式进行提示
             maxAssetSize: 200000, // 单个资源允许的最大文件容量，单位：字节，默认250kb
@@ -216,7 +217,7 @@ module.exports = (specifiedEntries, options) => {
         plugins: [
             new webpack.optimize.CommonsChunkPlugin({
                 name: 'common',
-                filename: isPro ? '[name]/[name].[chunkhash:7].js' : '[name]/[name].js',
+                filename: '[name]/[name].[chunkhash:7].js',
                 minChunks: function (module, count) {
                     // This prevents stylesheet resources with the .css or .scss extension
                     // from being moved from their original chunk to the vendor chunk
@@ -249,7 +250,8 @@ module.exports = (specifiedEntries, options) => {
             // 自定义插件函数，函数会接受到webpack的编译对象compiler（用this同样也能获取到）
             function (compiler) {
                 this.plugin('done', function (stats) { // 使用.plugin api增加自定义插件，'done'表示触发时机为编译结束后，stats表示编译生成的模块的详细信息
-                    require('open')((devServerConfig.https ? 'https' : 'http') + `://127.0.0.1:${devServerConfig.port}`); // 在编译完成后控制自动唤起浏览器并打开项目的入口页面
+                    fs.writeFileSync(path.resolve(cwd, 'mock/ls.html'), Object.keys(entries).map(p => `<div><a href="/${p}.html">${p}.html</a></div>`).join(''));
+                    !isPro && require('open')((devServerConfig.https ? 'https' : 'http') + `://127.0.0.1:${devServerConfig.port}/ls.html`); // 在编译完成后控制自动唤起浏览器并打开项目的入口页面
                 });
             }
         ].concat(htmlWebpackPluginCreator(entries))

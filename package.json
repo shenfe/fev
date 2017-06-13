@@ -4,10 +4,9 @@
   "scripts": {
     "preview": "node ./script/preview.js",
     "proxy": "node ./script/proxie.js",
-    "server": "webpack-dev-server --inline --config script/webpack.config.js",
     "clean": "rm ./dest/* -rf",
-    "dev": "rm ./dest/* -rf && cross-env NODE_ENV=development PLATFORM=web webpack --config script/webpack.config.js --progress --colors",
-    "pro": "rm ./dest/* -rf && cross-env NODE_ENV=production PLATFORM=web webpack --config script/webpack.config.js --progress --colors"
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --config script/webpack.config.js",
+    "pro": "rm ./dest/* -rf && cross-env NODE_ENV=production webpack --config script/webpack.config.js --progress --colors"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.1",

@@ -57,7 +57,6 @@ class Module1 extends Module {
     }
 
     ready($el) {
-        console.log('ready: ', $el);
         this.renderList();
     }
 }

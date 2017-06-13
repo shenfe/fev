@@ -102,7 +102,7 @@ const htmlWebpackPluginCreator = entries => Object.keys(entries).map(p => new Ht
 module.exports = (specifiedEntries, options) => {
     specifiedPages = specifiedEntries;
     let entries = getPagesEntry();
-    let isPro = options.isProduction || isProduction();
+    let isPro = (options && options.isProduction) || isProduction();
     let extractPageCss = new ExtractTextPlugin(isPro ? '[name]/[name].[contenthash:7].css' : '[name]/[name].css');
     let extractCommonCss = new ExtractTextPlugin(isPro ? 'common/common.[contenthash:7].css' : 'common/common.css');
     return {

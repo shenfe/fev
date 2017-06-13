@@ -8,7 +8,7 @@ require('STYLES/global.css');
 import module3 from './module-module3/index.js'
 import module4 from 'VIEWS/module-module4/index.js'
 
-import { domready } from 'SCRIPTS/domready'
+import domready from 'SCRIPTS/domready'
 
 class Page2 {
     constructor() {

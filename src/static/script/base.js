@@ -2,7 +2,7 @@
  * Created by godzilla on 6/11/17.
  */
 
-import { domready } from './domready'
+import domready from './domready'
 
 class Page {
     constructor() {

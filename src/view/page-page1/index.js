@@ -16,7 +16,7 @@ var footerTemplate = require('./footer.html');
 
 const method2 = Symbol('method2');
 
-import { Page } from 'SCRIPTS/fev'
+import { Page } from 'SCRIPTS/base'
 
 class Page1 extends Page {
     // dom ready
@@ -33,7 +33,6 @@ class Page1 extends Page {
 
     ready($body) {
         for (let moduleId in modules) {
-            console.log(moduleId, modules[moduleId]);
             if (modules[moduleId].type === 'vue') {
                 modules[moduleId].el = `[module="${moduleId}"]`;
                 this[moduleId] = new Vue(modules[moduleId]);

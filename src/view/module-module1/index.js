@@ -11,7 +11,7 @@ import { Component1 } from 'VIEWS/component-component1/index.jsx'
 
 import { usePubSub, useVelocity } from 'SCRIPTS/decorator'
 
-import { Module } from 'SCRIPTS/fev'
+import { Module } from 'SCRIPTS/base'
 // import { name } from 'SCRIPTS/decorator'
 
 const tmpl = require('./index.vm');

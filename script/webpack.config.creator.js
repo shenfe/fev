@@ -101,6 +101,8 @@ const htmlWebpackPluginCreator = entries => Object.keys(entries).map(p => new Ht
     })
 );
 
+let devServerConfig = require('./webpack.devserver.config.js');
+
 module.exports = (specifiedEntries, options) => {
     specifiedPages = specifiedEntries;
     let entries = getPagesEntry();
@@ -131,23 +133,7 @@ module.exports = (specifiedEntries, options) => {
             }
         },
         watch: !isPro,
-        devServer: {
-            // 配置代理服务器
-            proxy: {
-                '/api': 'http://localhost:3000' // 访问路由/api，会转发到localhost:3000的地址去
-            },
-            // 静态资源路径，需要配置编译后的模块文件存放的路径（同output中的path），也可以配置mock文件存放的路径等
-            contentBase: [
-                path.resolve(cwd, 'dest'),
-                path.resolve(cwd, 'mock')
-            ],
-            compress: true, // 是否开启压缩
-            historyApiFallback: true,
-            hot: false, // 是否开启热更新
-            noInfo: true, // 在热更新时，只输出错误与警告信息，不输出其他日志
-            https: false, // 是否使用https
-            stats: 'verbose' // 输出所有日志
-        },
+        devServer: devServerConfig,
         performance: {
             hints: isPro ? 'error' : 'warning', // 当资源不符合性能规则时，以什么方式进行提示
             maxAssetSize: 200000, // 单个资源允许的最大文件容量，单位：字节，默认250kb
@@ -263,7 +249,7 @@ module.exports = (specifiedEntries, options) => {
             // 自定义插件函数，函数会接受到webpack的编译对象compiler（用this同样也能获取到）
             function (compiler) {
                 this.plugin('done', function (stats) { // 使用.plugin api增加自定义插件，'done'表示触发时机为编译结束后，stats表示编译生成的模块的详细信息
-                    require('open')('http://127.0.0.1:9000'); // 在编译完成后控制自动唤起浏览器并打开项目的入口页面
+                    require('open')((devServerConfig.https ? 'https' : 'http') + `://127.0.0.1:${devServerConfig.port}`); // 在编译完成后控制自动唤起浏览器并打开项目的入口页面
                 });
             }
         ].concat(htmlWebpackPluginCreator(entries))

@@ -1,5 +1,5 @@
 /**
- * domready
+ * DomReady
  * @refer https://github.com/ded/domready/blob/master/ready.js
  */
 
@@ -17,6 +17,6 @@ if (!loaded) {
     });
 }
 
-export default function domready(fn) {
+export default function domReady(fn) {
     loaded ? window.setTimeout(fn, 0) : fns.push(fn)
 }

@@ -16,7 +16,7 @@ var footerTemplate = require('./footer.html');
 
 const method2 = Symbol('method2');
 
-import { Page } from 'SCRIPTS/base'
+import { Page } from 'SCRIPTS/baseClass'
 
 class Page1 extends Page {
     // dom ready

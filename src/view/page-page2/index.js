@@ -8,14 +8,14 @@ require('STYLES/global.css');
 import module3 from './module-module3/index.js'
 import module4 from 'VIEWS/module-module4/index.js'
 
-import domready from 'SCRIPTS/domready'
+import domReady from 'SCRIPTS/domReady'
 
 class Page2 {
     constructor() {
         this.$module3 = new module3();
         this.$module4 = new module4();
 
-        domready(() => {
+        domReady(() => {
             this.ready(document.body);
         });
     }

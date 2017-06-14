@@ -2,11 +2,11 @@
  * Created by godzilla on 6/11/17.
  */
 
-import domready from './domready'
+import domReady from './domReady'
 
 class Page {
     constructor() {
-        domready(() => {
+        domReady(() => {
             this.$el = document.body;
             window.setTimeout(() => {
                 this.ready(document.body);

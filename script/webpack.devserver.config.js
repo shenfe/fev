@@ -3,6 +3,7 @@ const path = require('path');
 const cwd = process.cwd();
 
 module.exports = {
+    host: '127.0.0.1',
     port: 9000,
     publicPath: '/',
     // 配置代理服务器

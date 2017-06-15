@@ -2,7 +2,8 @@
  * Created by godzilla on 5/18/17.
  */
 
-import './polyfill'
+/* For compatibility */
+// import './polyfill'
 
 import pubsub from './util/pubsub'
 import request from './util/request'

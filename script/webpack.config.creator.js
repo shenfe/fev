@@ -119,7 +119,7 @@ module.exports = (specifiedEntries, options) => {
             path: path.resolve(cwd, 'dest'),
             publicPath: '/', // dev-server访问的路径
             filename: '[name]/[name].[chunkhash:7].js',
-            chunkFilename: '[name].[chunkhash:7].js',
+            chunkFilename: '[name].[chunkhash:7].js'
         },
         resolve: {
             modules: [
@@ -137,8 +137,8 @@ module.exports = (specifiedEntries, options) => {
         devServer: isPro ? undefined : devServerConfig,
         performance: {
             hints: isPro ? 'error' : 'warning', // 当资源不符合性能规则时，以什么方式进行提示
-            maxAssetSize: 200000, // 单个资源允许的最大文件容量，单位：字节，默认250kb
-            maxEntrypointSize: 400000, // 单个入口模块引用的所有资源的最大文件容量，单位：字节，默认250kb
+            maxAssetSize: 400000, // 单个资源允许的最大文件容量，单位：字节，默认250kb
+            maxEntrypointSize: 800000, // 单个入口模块引用的所有资源的最大文件容量，单位：字节，默认250kb
             assetFilter: function(assetFilename) { // 控制哪些文件需要进行性能检测
                 return assetFilename.endsWith('.css') || assetFilename.endsWith('.js');
             }
@@ -238,23 +238,28 @@ module.exports = (specifiedEntries, options) => {
             //     filename: 'chunk-manifest.json',
             //     manifestVariable: 'webpackManifest'
             // }),
-
-            // new webpack.ProgressPlugin(function (percentage, msg) {
-            //     logUpdate(percentage * 100 + '%', msg); // 实时更新编译进度，使用实时更新日志模块log-update
-            // }),
+        ].concat(htmlWebpackPluginCreator(entries)).concat(isPro ? [
             new webpack.optimize.UglifyJsPlugin({ // 解析/压缩/美化所有js模块，通过配置except可以防止变量被改变
+                sourceMap: true,
                 mangle: {
                     except: []
                 }
-            }),
+            })
+        ] : [
+            // new webpack.ProgressPlugin(function (percentage, msg) {
+            //     logUpdate(percentage * 100 + '%', msg); // 实时更新编译进度，使用实时更新日志模块log-update
+            // })
+        ]).concat([
             // 自定义插件函数，函数会接受到webpack的编译对象compiler（用this同样也能获取到）
             function (compiler) {
-                if (options && options.fromBuilder) return;
                 this.plugin('done', function (stats) { // 使用.plugin api增加自定义插件，'done'表示触发时机为编译结束后，stats表示编译生成的模块的详细信息
-                    fs.writeFileSync(path.resolve(cwd, 'mock/ls.html'), Object.keys(entries).map(p => `<div><a href="/${p}.html">${p}.html</a></div>`).join(''));
-                    !isPro && require('open')((devServerConfig.https ? 'https' : 'http') + `://127.0.0.1:${devServerConfig.port}/ls.html`); // 在编译完成后控制自动唤起浏览器并打开项目的入口页面
+                    if (!(options && options.fromBuilder)) {
+                        fs.writeFileSync(path.resolve(cwd, 'mock/ls.html'), Object.keys(entries).map(p => `<div><a href="/${p}.html">${p}.html</a></div>`).join(''));
+                        require('open')((devServerConfig.https ? 'https' : 'http') + `://127.0.0.1:${devServerConfig.port}/ls.html`); // 在编译完成后控制自动唤起浏览器并打开项目的入口页面
+                    }
+                    console.log('Webpack done!');
                 });
             }
-        ].concat(htmlWebpackPluginCreator(entries))
+        ])
     };
 };

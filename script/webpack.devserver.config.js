@@ -20,5 +20,7 @@ module.exports = {
     hot: false, // 是否开启热更新
     noInfo: true, // 在热更新时，只输出错误与警告信息，不输出其他日志
     https: false, // 是否使用https
-    stats: 'verbose' // 输出所有日志
+    stats: {
+        colors: true
+    }
 };

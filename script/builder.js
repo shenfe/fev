@@ -7,11 +7,12 @@ const webpackConfigCreator = require('./webpack.config.creator');
 
 let compiler;
 
-module.exports = viewPath => {
+module.exports = (viewPath, callback) => {
     console.log('building ' + viewPath);
     compiler = webpack(webpackConfigCreator([viewPath], {
         isProduction: true,
-        fromBuilder: true
+        fromBuilder: true,
+        done: callback
     }));
     compiler.run((err, stats) => {
         // ...

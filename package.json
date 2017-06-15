@@ -7,7 +7,7 @@
     "clean": "./node_modules/.bin/shx rm -rf ./dest/*",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --config script/webpack.config.js",
     "pro": "npm run clean && cross-env NODE_ENV=production webpack --config script/webpack.config.js --progress --colors",
-    "pros": "node ./script/preview.js page-"
+    "pros": "npm run clean && node ./script/preview.js page-"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.1",

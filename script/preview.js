@@ -11,9 +11,13 @@ args.forEach(function (val, index, array) {
     console.log(`${index}: ${val}`);
 });
 
+const Webpack = require('webpack');
+const WebpackDevServer = require('webpack-dev-server');
+
 const viewDir = 'src/view';
 
-const { cwd, getDirs } = require('./helper.js');
+const helper = require('./helper.js');
+const cwd = helper.cwd, getDirs = helper.getDirs;
 
 const builder = require('./builder');
 
@@ -43,27 +47,55 @@ if (!(args.length === 0 || (args.length === 1 && args[0] === 'all'))) {
     viewList = Object.keys(table);
 }
 
-// prepare the preview-list page file
-fs.writeFileSync(path.resolve(cwd, 'mock/ls.html'),
-    viewList.map(p => {
-        if (p.startsWith('page-') || p.startsWith('module-') || p.startsWith('component-')) {
-            p = p.substr(p.indexOf('-') + 1);
-        }
-        return `<div><a href="/dest/${p}.html">${p}.html</a></div>`;
-    }).join(''));
-
-// build the views
-viewList.forEach(builder);
-
-if (viewList.length) {
-    let port = 9000;
-    exec(`python -m SimpleHTTPServer ${port}`, { encoding: 'utf8' }, function (err, stdout, stderr) {
+let launchDevServer = function () {
+    /* Using dev-server through the Node.js API, with the devServer option ignored in webpack config */
+    const devServerConfig = require('./webpack.devserver.config');
+    const hostString = (devServerConfig.https ? 'https' : 'http') + `://${devServerConfig.host}:${devServerConfig.port}`;
+    const webpackConfig = require('./webpack.config.creator')([], {
+        isProduction: true,
+        ru: `${hostString}/mock/ls.html`
+    });
+    const compiler = Webpack({
+        entry: [path.resolve(cwd, `mock/ls.js?${hostString}`)],
+        output: {
+            publicPath: '/'
+        },
+        plugins: [
+            function (compiler) {
+                this.plugin('done', function (stats) {
+                    // prepare the preview-list page file
+                    helper.renderPreviewPage(viewList.map(p => {
+                        if (p.startsWith('page-') || p.startsWith('module-') || p.startsWith('component-')) {
+                            p = p.substr(p.indexOf('-') + 1);
+                        }
+                        return {
+                            link: `/${p}.html`,
+                            text: `${p}.html`
+                        };
+                    }));
+                    require('open')((devServerConfig.https ? 'https' : 'http') + `://127.0.0.1:${devServerConfig.port}/ls.html`);
+                    console.log('Webpack done!');
+                });
+            }
+        ]
+    });
+    const devServer = new WebpackDevServer(compiler, devServerConfig);
+    devServer.listen(devServerConfig.port, devServerConfig.host, function (err) {
         if (err) {
-            console.log('set up server error: ' + stderr);
+            console.log(err);
         } else {
-            var data = stdout; // JSON.parse(stdout);
-            console.log(data);
-            require('open')(`http://127.0.0.1:${port}/mock/ls.html`);
+            console.log(`WebpackDevServer listening at ${devServerConfig.host}:${devServerConfig.port}`);
         }
     });
-}
+};
+
+// build the views
+let defers = viewList.length;
+viewList.forEach(function (v) {
+    builder(v, function () {
+        defers--;
+        if (defers === 0) {
+            launchDevServer();
+        }
+    });
+});

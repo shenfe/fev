@@ -91,25 +91,27 @@ const pageTemplateRender = (filePath, options) => {
     return helper.makeFile(tmpl, options);
 };
 
-const htmlWebpackPluginCreator = entries => Object.keys(entries).map(p => new HtmlWebpackPlugin({
-        filename: `${p}.html`,
-        excludeChunks: Object.keys(entries).filter(q => p !== q),
-        templateContent: pageTemplateRender(entries[p].replace('.js', '.vm'), {
-            title: p,
-            description: `sample page ${p}`
-        }),
-        favicon: path.resolve(cwd, 'src/static/image/favicon.ico')
-    })
-);
-
 let devServerConfig = require('./webpack.devserver.config.js');
 
 module.exports = (specifiedEntries, options) => {
+    const pathPrefix = 'static/';
     specifiedPages = specifiedEntries;
     let entries = getPagesEntry();
     let isPro = (options && options.isProduction) || isProduction();
-    let extractPageCss = new ExtractTextPlugin('[name]/[name].[contenthash:7].css');
-    let extractCommonCss = new ExtractTextPlugin('common/common.[contenthash:7].css');
+
+    let htmlWebpackPluginCreator = entries => Object.keys(entries).map(p => new HtmlWebpackPlugin({
+            filename: `${p}.html`,
+            excludeChunks: Object.keys(entries).filter(q => p !== q),
+            templateContent: pageTemplateRender(entries[p].replace('.js', '.vm'), {
+                title: p,
+                description: `sample page ${p}`
+            }),
+            favicon: path.resolve(cwd, 'src/static/image/favicon.ico')
+        })
+    );
+
+    let extractPageCss = new ExtractTextPlugin(`${pathPrefix}[name]/[name].[contenthash:7].css`);
+    let extractCommonCss = new ExtractTextPlugin(`${pathPrefix}common/common.[contenthash:7].css`);
     return {
         devtool: isPro ? 'cheap-module-source-map' : 'eval-source-map',
         target: 'web',
@@ -118,8 +120,7 @@ module.exports = (specifiedEntries, options) => {
         output: {
             path: path.resolve(cwd, 'dest'),
             publicPath: '/', // dev-server访问的路径
-            filename: '[name]/[name].[chunkhash:7].js',
-            chunkFilename: '[name].[chunkhash:7].js'
+            filename: `${pathPrefix}[name]/[name].[chunkhash:7].js`
         },
         resolve: {
             modules: [
@@ -217,7 +218,7 @@ module.exports = (specifiedEntries, options) => {
         plugins: [
             new webpack.optimize.CommonsChunkPlugin({
                 name: 'common',
-                filename: '[name]/[name].[chunkhash:7].js',
+                filename: `${pathPrefix}[name]/[name].[chunkhash:7].js`,
                 minChunks: function (module, count) {
                     // This prevents stylesheet resources with the .css or .scss extension
                     // from being moved from their original chunk to the vendor chunk
@@ -253,11 +254,26 @@ module.exports = (specifiedEntries, options) => {
             // 自定义插件函数，函数会接受到webpack的编译对象compiler（用this同样也能获取到）
             function (compiler) {
                 this.plugin('done', function (stats) { // 使用.plugin api增加自定义插件，'done'表示触发时机为编译结束后，stats表示编译生成的模块的详细信息
-                    if (!(options && options.fromBuilder)) {
-                        fs.writeFileSync(path.resolve(cwd, 'mock/ls.html'), Object.keys(entries).map(p => `<div><a href="/${p}.html">${p}.html</a></div>`).join(''));
-                        require('open')((devServerConfig.https ? 'https' : 'http') + `://127.0.0.1:${devServerConfig.port}/ls.html`); // 在编译完成后控制自动唤起浏览器并打开项目的入口页面
-                    }
+                    // 如果来自临时builder，则不进行后续操作
+                    if (options && options.fromBuilder) return;
+
+                    helper.renderPreviewPage(Object.keys(entries).map(p => {
+                        return {
+                            link: `/${p}.html`,
+                            text: `${p}.html`
+                        };
+                    }));
+                    // 在编译完成后控制自动唤起浏览器并打开页面
+                    require('open')((options && options.ru)
+                        ? options.ru
+                        : ((devServerConfig.https ? 'https' : 'http') + `://127.0.0.1:${devServerConfig.port}/ls.html`));
                     console.log('Webpack done!');
+                });
+            }
+        ]).concat([
+            function (compiler) {
+                this.plugin('done', function () {
+                    options && options.done && options.done();
                 });
             }
         ])

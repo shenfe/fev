@@ -1,0 +1,3 @@
+#foreach($item in $this)
+<a href="$item.link">$item.text</a>
+#end

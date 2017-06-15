@@ -38,11 +38,18 @@ if (!String.prototype.replaceAll) {
     };
 }
 
+const renderPreviewPage = viewList => {
+    console.log('preview: ', viewList);
+    let tmpl = fs.readFileSync(path.resolve(cwd, 'script/template/preview.vm'), 'utf8');
+    fs.writeFileSync(path.resolve(cwd, 'mock/ls.html'), vlc.render(tmpl, viewList));
+};
+
 module.exports = {
     cwd,
     getDirs,
     isProduction,
     readFile: read,
     makeFile: render,
-    matchReg
+    matchReg,
+    renderPreviewPage
 };

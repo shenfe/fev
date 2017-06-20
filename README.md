@@ -73,11 +73,9 @@ A simple and universal architecture for frontend projects.
 
     └── dest
         │
-        ├── page
-        │   │
-        │   ├── page1.html
-        │   ├── page2.html
-        │   └── ...
+        ├── page1.html
+        ├── page2.html
+        ├── ...
         │
         └── static
             │

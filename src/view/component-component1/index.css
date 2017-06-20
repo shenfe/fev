@@ -1,3 +1,11 @@
 .test-component1 {
     color: #ccc;
 }
+
+.dot {
+    background-image: url('/component-component1/asset/dot.png');
+}
+
+.dot:hover {
+    background-image: url('/component-component1/asset/dot-active.png');
+}

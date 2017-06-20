@@ -1,3 +1,12 @@
 .test-index {
     color: #333;
 }
+
+body {
+    width: 1vw;
+    height: 1vh;
+    overflow: hidden;
+    background-image: url('./asset/bg.png');
+    background-repeat: no-repeat;
+    background-position: center;
+}

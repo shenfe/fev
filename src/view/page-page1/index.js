@@ -12,6 +12,7 @@ var modules = {
 };
 
 import headerStyle from './header.scss'
+let indexStyles = require('./index.css');
 var footerTemplate = require('./footer.html');
 
 const method2 = Symbol('method2');

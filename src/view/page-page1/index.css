@@ -3,10 +3,10 @@
 }
 
 body {
-    width: 1vw;
-    height: 1vh;
+    width: 100vw;
+    height: 100vh;
     overflow: hidden;
-    background-image: url('./asset/bg.png');
+    background-image: url('./asset/bg.jpg');
     background-repeat: no-repeat;
     background-position: center;
 }

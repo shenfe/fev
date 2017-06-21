@@ -156,6 +156,18 @@ module.exports = (specifiedEntries, options) => {
                     use: ['babel-loader']
                 },
                 {
+                    test: /\.(jpg|png|gif)$/,
+                    use: [
+                        {
+                            loader: 'url-loader',
+                            options: {
+                                limit: 8192
+                            }
+                        }
+                    ]
+                },
+                { test: /\.(woff|woff2)$/, use: ['url-loader'] },
+                {
                     test: /\.vm$/,
                     use: ['raw-loader']
                 },
@@ -210,7 +222,12 @@ module.exports = (specifiedEntries, options) => {
                     ],
                     use: extractCommonCss.extract({
                         fallback: 'style-loader',
-                        use: ['css-loader', 'sass-loader']
+                        use: [{
+                            loader: 'css-loader',
+                            options: {
+                                modules: true
+                            }
+                        }, 'sass-loader']
                     })
                 }
             ]

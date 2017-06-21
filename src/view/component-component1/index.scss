@@ -1,0 +1,17 @@
+:local(.test-component1) {
+    font-weight: bolder;
+    padding-left: 16px;
+}
+
+:local(.dot) {
+    background-image: url('./asset/dot.png');
+    background-repeat: no-repeat;
+}
+
+:local(.dot:hover) {
+    background-image: url('./asset/dot-active.png');
+}
+
+body {
+    background-color: #ddd;
+}

@@ -73,6 +73,7 @@ A simple and universal architecture for frontend projects.
 
     └── dest
         │
+        ├── favicon.ico
         ├── page1.html
         ├── page2.html
         ├── ...
